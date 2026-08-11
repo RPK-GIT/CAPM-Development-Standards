@@ -291,7 +291,7 @@ Process-lifetime technical caches (compiled templates, static config) are fine w
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-ARCH-006, CAP-SRV-006, CAP-SEC-013 (raw SQL), future CAP-DB/CAP-INT rules |
+| **Related rules** | CAP-ARCH-006, CAP-SRV-006, CAP-SEC-013 (raw SQL), CAP-DB-004/-005; future CAP-INT rules |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

@@ -762,7 +762,7 @@ Rules inexpressible declaratively (cross-entity checks, remote lookups) belong i
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-010, CAP-SEC-012; absorbs candidate CAP-DB-6 (the future CAP-DB category will cross-reference, not restate) |
+| **Related rules** | CAP-SEC-010, CAP-SEC-012; absorbs candidate CAP-DB #6 — CAP-DB-004/-005 cross-reference this rule rather than restating it |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

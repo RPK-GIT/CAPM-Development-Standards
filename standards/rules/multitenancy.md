@@ -344,7 +344,7 @@ Deployments provably not touching the model/database artifacts (config-only, UI-
 | **Runtime** | Both |
 | **CAP version** | Current docs: Java `RequestContextRunner` API (`runtime.requestContext()`, `systemUser(tenant)`, `systemUserProvider()`), `TenantProviderService`; Node.js `cds.context`/`cds.spawn`/`cds.tx` context handling; queued/outbox messages restore tenant + user ID |
 | **Status** | Active |
-| **Related rules** | CAP-MT-003, CAP-SEC-009; future CAP-EVT rules (outbox/queue semantics) cross-reference |
+| **Related rules** | CAP-MT-003, CAP-SEC-009; CAP-EVT-002/-003/-004 (queue semantics) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -366,7 +366,7 @@ Scheduler/startup/async code wrapped in framework context APIs with explicit ten
 2. For each site, verify a framework context wrapper with explicit tenant (Java `requestContext()...run`; Node `cds.spawn`/`cds.tx({ tenant })` or documented context inheritance) → unwrapped DB/service access → FAIL with file:line.
 3. Search for named-user propagation into async paths (storing `req.user` for later impersonation, forwarding user JWTs into queued jobs) → FAIL (use technical users).
 4. Check "all tenants" loops use `TenantProviderService`/MTX tenant listing, not hardcoded arrays → FAIL otherwise.
-5. Cross-check queue/outbox usage: handlers relying on caller roles at processing time (queue restores only user ID, runs privileged) → flag to the future CAP-EVT review; note here as observation.
+5. Cross-check queue/outbox usage: handlers relying on caller roles at processing time (queue restores only user ID, runs privileged) → report under CAP-EVT-004; note here as observation.
 
 ### Good example
 ```java

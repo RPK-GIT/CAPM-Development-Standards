@@ -29,16 +29,16 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-21 | Architecture | Microservice-cut criteria ("late-cut" advised, no thresholds) | mechanism-only | ORG criteria still open. *Modulith default + ADR-per-cut now enforced by CAP-ARCH-006/-007* |
 | G-22 | Architecture | API/service versioning, breaking-change and deprecation management | silent | ORG API lifecycle policy |
 | G-23 | Architecture | Multi-protocol exposure policy (same service via OData+REST+GraphQL); GraphQL adapter support stance (plugin, not core) | silent | ORG protocol governance still open. *Exposure explicitness now enforced by CAP-SRV-006* |
-| G-24 | Data | Raw-SQL governance in Java (`JdbcTemplate` permitted, no criteria/review rules) | mechanism-only | ORG justification + review requirement |
-| G-25 | Data | PostgreSQL-in-production criteria ("edge cases" undefined; no MT/extensibility support) | mechanism-only | ORG decision matrix |
+| G-24 | Data | Raw-SQL governance in Java (`JdbcTemplate` permitted, no criteria/review rules) | mechanism-only | ORG criteria still open. *Isolation/documentation duty now CAP-DB-004* |
+| G-25 | Data | PostgreSQL-in-production criteria ("edge cases" undefined; no MT/extensibility support) | mechanism-only | ORG decision matrix still open. *ADR duty per deviation now CAP-DB-001* |
 | G-26 | Data | Test-data vs production seed-data separation policy (beyond `cds deploy --production` semantics) | mechanism-only | ORG data policy |
 | G-27 | Integration | Node.js resilience for remote calls (timeouts/retries/circuit breakers — Java gets ResilienceDecorator, Node only service-mesh pointer) | mechanism-only | ORG resilience standard for Node |
 | G-28 | Integration | Destination governance (naming, per-environment segregation, credential rotation) | silent | ORG destination standard |
 | G-29 | Integration | Live remote access vs replication/federation thresholds | mechanism-only | ORG criteria |
-| G-30 | Events | Domain-event naming/namespacing/versioning scheme for own events | mechanism-only (examples only) | ORG event-design standard |
-| G-31 | Events | Broker selection matrix (Event Hub vs Event Mesh vs non-SAP brokers) | mechanism-only ("new default" statement only) | ORG selection policy |
-| G-32 | Events | Dead-letter operations: ownership, alerting thresholds, SLAs ("manual intervention required") | explicit-gap | ORG runbook (feeds M9) |
-| G-33 | Events | Long-running/background-work idempotency, retry, compensation patterns (no distributed atomicity) | mechanism-only | ORG async-work standard |
+| G-30 | Events | Domain-event naming/namespacing/versioning scheme for own events | mechanism-only (examples only) | ORG event-design standard still open. *Modeled-event requirement now CAP-EVT-001* |
+| G-31 | Events | Broker selection matrix (Event Hub vs Event Mesh vs non-SAP brokers) | mechanism-only ("new default" statement only) | ORG selection policy still open. *Default + documented-reason duty now CAP-EVT-006* |
+| G-32 | Events | Dead-letter operations: ownership, alerting thresholds, SLAs ("manual intervention required") | explicit-gap | ORG runbook (feeds M9) still open. *The operational-process requirement itself is now CAP-EVT-005* |
+| G-33 | Events | Long-running/background-work idempotency, retry, compensation patterns (no distributed atomicity) | mechanism-only | ORG compensation-pattern standard still open. *Invariants now enforced: CAP-TXN-005 (no atomicity assumptions), CAP-EVT-003 (idempotency)* |
 | G-34 | Multitenancy | Tenant-upgrade orchestration: zero-downtime, batching, canary tenants, rollback | mechanism-only | ORG upgrade runbook. *The upgrade-before-serve invariant itself is now CAP-MT-005* |
 | G-35 | Extensibility | Extension-allowlist content (field caps, namespaces, annotation whitelist) | explicit-gap (mechanism default-forbidden) | ORG per-product allowlist |
 | G-36 | Operations | Consolidated production-readiness / go-live checklist (SAP has none; prep scattered in to-cf guide) | silent | This standard's M9 gate fills this gap |

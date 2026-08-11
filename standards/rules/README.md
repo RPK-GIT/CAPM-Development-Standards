@@ -2,7 +2,7 @@
 
 The formal rule catalog describing what a production-grade CAP application looks like. Every rule follows [templates/rule-template.md](../../templates/rule-template.md) and carries a stable ID, severity, [authority level](../../docs/authority-levels.md), runtime applicability, and CAP version applicability.
 
-> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9) — 51 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
+> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9), `CAP-DB` (10), `CAP-TXN` (6), `CAP-EVT` (7) — 74 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
 
 ## Categories
 
@@ -12,10 +12,10 @@ The formal rule catalog describing what a production-grade CAP application looks
 | `CAP-CDS` | Domain modeling & CDS — **11 rules active** | [cds-modeling.md](cds-modeling.md) | Domain modeling guide, CDS reference |
 | `CAP-SRV` | Services & APIs — **9 rules active** | [services-apis.md](services-apis.md) | Providing services guide, protocol adapters |
 | `CAP-LOGIC` | Business logic & event handlers | [business-logic.md](business-logic.md) | Node.js/Java runtime docs |
-| `CAP-DB` | Data access & persistence | [data-persistence.md](data-persistence.md) | Databases guide, CQL/CQN |
-| `CAP-TXN` | Transactions | [transactions.md](transactions.md) | Node.js `cds.tx`, Java ChangeSet docs |
+| `CAP-DB` | Data access & persistence — **10 rules active** | [data-persistence.md](data-persistence.md) | Databases guide, CQL/CQN |
+| `CAP-TXN` | Transactions — **6 rules active** | [transactions.md](transactions.md) | Node.js `cds.tx`, Java ChangeSet docs |
 | `CAP-INT` | Integration & remote services | [integration.md](integration.md) | Consuming services guide |
-| `CAP-EVT` | Events & messaging | [events-messaging.md](events-messaging.md) | Messaging guide |
+| `CAP-EVT` | Events & messaging — **7 rules active** | [events-messaging.md](events-messaging.md) | Messaging guide |
 | `CAP-MT` | Multitenancy — **6 rules active** | [multitenancy.md](multitenancy.md) | Multitenancy/MTX guide |
 | `CAP-EXT` | Extensibility | [extensibility.md](extensibility.md) | Extensibility guide |
 | `CAP-SEC` | Security — **18 rules active** | [security.md](security.md) | Security/authorization/authentication guides |

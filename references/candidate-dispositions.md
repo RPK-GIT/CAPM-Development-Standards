@@ -152,3 +152,83 @@ Batch severity: **0 Critical / 7 High / 18 Medium / 2 Low** — consistent with 
 - **Pagination limit values** — mechanism confirmed (default 1,000 truncation) but rule ownership stays with CAP-SEC-014 (decision) and future CAP-PERF (values); not duplicated here.
 - **Draft-enablement criteria (when to enable drafts)** — SAP documents the mechanism, not criteria; remains gap G-20; CAP-SRV-007 governs *how*, not *whether*.
 - **Bad-practices content (code generation, "abstracting from an abstraction")** — page removed from official docs; the portions without live-page support were narrowed out of CAP-ARCH-002 rather than cited to a dead URL; source map updated to track the removal.
+
+---
+
+## Batch 3 — Data, Transactions & Events (2026-08-11)
+
+Verification basis: two targeted verification passes (databases/persistence pages; transactions/events pages) against live official documentation on 2026-08-11. Six documentation-precision corrections applied (marked ⚠). Final rules: [data-persistence.md](../standards/rules/data-persistence.md) (10), [transactions.md](../standards/rules/transactions.md) (6), [events-messaging.md](../standards/rules/events-messaging.md) (7).
+
+### Data / persistence candidates (10 reviewed — #6 already dispositioned in Batch 1 — plus 1 cross-category pull, 1 new rule)
+
+| Candidate (candidate-rules.md §CAP-DB) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 HANA Cloud for production | ACCEPTED | CAP-DB-001 | High kept; PostgreSQL "aren't **yet** supported" nuance preserved; QRC validation scope embedded |
+| #2 No SQLite/H2 in production | ACCEPTED WITH MODIFICATION | CAP-DB-002 | "Not fit for production" verified verbatim (SAP-REQ); extended with dev/prod parity-limit awareness (locking, streaming, time-travel) and the documented in-memory-cache carve-out |
+| #3 New `@cap-js` database services | ACCEPTED WITH MODIFICATION | CAP-DB-003 | Absorbs #4; ⚠ authority on migration corrected REQ → **SAP-REC** ("highly recommended", no removal date documented); the no-direct-drivers clause carries the normative "should not" wording (cite new-dbs, not the sqlite page) |
+| #4 No direct driver dependencies | MERGED | → CAP-DB-003 | Same concern, same mechanism |
+| #5 CQL over raw SQL | ACCEPTED | CAP-DB-004 | High kept; injection mechanics remain CAP-SEC-013 (cross-referenced, not restated); org criteria for native SQL stay gap G-24 |
+| #6 Injection-safe query construction | (Batch 1) MERGED | → CAP-SEC-013 | Historical — recorded in Batch 1 |
+| #7 Path expressions, not CQN UNION/JOIN | DOWNGRADED | CAP-DB-005 | High → **Medium**: dropped-capability violations fail loudly at runtime (defects, not silent corruption); "dropped support" verified verbatim; virtual-elements-ignored behavior folded in |
+| #8 `SELECT.localized` for localized reads | ACCEPTED | CAP-DB-006 | Medium kept — the silent wrong-language failure mode is the review value |
+| #9 `@cds.persistence.journal` | ACCEPTED WITH MODIFICATION | CAP-DB-007 | Added the documented "must be checked into the version control system" requirement for `.hdbmigrationtable` files |
+| #10 Static model style (Java) | DOWNGRADED | CAP-DB-010 | Medium → **Low** ("recommended" style guidance; both styles supported) |
+| CAP-PERF #6 Decimal/Int64 arithmetic in DB (cross-category) | MERGED | → CAP-DB-009 | Relocated: silent precision loss is a data-integrity concern, not (only) performance; documented string-return behavior verified verbatim |
+| — (batch scope: concurrency/locking) | NEW RULE | CAP-DB-008 | Framework locking primitives (`forUpdate`/`.lock()` incl. `SKIP_LOCKED`) vs hand-rolled lock flags; documented limitations verified (no projections/views; no SQLite; H2 exclusive-only) |
+
+### Transaction candidates (5 reviewed + 1 cross-category pull)
+
+| Candidate (§CAP-TXN) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Managed transactions in handlers | ACCEPTED | CAP-TXN-001 | "You don't have to care" (Node) and auto-ChangeSet (Java) verified verbatim |
+| #2 `cds.tx()` outside handlers; functional form | ACCEPTED | CAP-TXN-002 | SQLite parallel-transaction deadlock statement verified and embedded |
+| #3 No `cds.tx(req)` | DOWNGRADED | CAP-TXN-003 | ⚠ Docs do **not** say "deprecated" — actual wording: "still works but is not required nor recommended anymore" → authority REQ → **SAP-REC**, severity Medium → **Low** (stale idiom, still functional) |
+| #4 ChangeSet API / Spring `@Transactional` | ACCEPTED WITH MODIFICATION | CAP-TXN-004 | Added raw-JDBC-transaction-control prohibition on the CAP datasource and the `enforceTransactional=false` default note |
+| #5 No distributed-atomicity assumptions | ACCEPTED WITH MODIFICATION | CAP-TXN-005 | ⚠ Re-sourced: the "not as a distributed atomic transaction" quote exists only on the **Node.js** cds-tx page; the Java changeset page never mentions atomicity — rule reworded to "documented limitation (Node) + no documented guarantee (Java)", High kept |
+| CAP-LOGIC #5 Always await emits/async ops (cross-category) | MERGED | → CAP-TXN-006 | Relocated: a transaction-integrity requirement ("invalid transaction states and deadlocks" verified verbatim); High, SAP-REQ, Node.js |
+
+### Event / messaging candidates (7 reviewed)
+
+| Candidate (§CAP-EVT) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Protocol-agnostic events | DOWNGRADED | CAP-EVT-001 | High → **Medium**: direct violation is coupling/duplication; escalations route through CAP-EVT-002/CAP-MT-003/CAP-ARCH-002 |
+| #2 Persistent outbox in production | ACCEPTED WITH MODIFICATION | CAP-EVT-002 | ⚠ Authority REQ → **SAP-REC**: the queue is the documented default with documented rationale, but `cds.unqueued`/immediate dispatch is a documented API — the rule governs *undocumented disabling*, with the escape hatch requiring recorded justification. **Critical kept** (justified: phantom/lost events = cross-system inconsistency + lost audit evidence, in SAP's own terms). cds 8→10 double-processing hazard embedded (verified on the live page) |
+| #3 Idempotent handlers | ACCEPTED | CAP-EVT-003 | "Handlers must still be idempotent" verified verbatim (SAP-REQ); **Critical kept** with explicit justification (duplicate business effects = silent data corruption; contrast with High CAP-MT-004 explained in the rule) |
+| #4 No sensitive data in headers; claims in payload | DOWNGRADED | CAP-EVT-004 | Critical → **High**: requires specific mistakes rather than default-open. ⚠ Nuance corrected: SAP allows claims "via payload or headers at queue time" — the prohibition is *sensitive* data (tokens/PII/secrets) in outbound headers; privileged-mode role-check failure mode added |
+| #5 Dead-letter operations | ACCEPTED WITH MODIFICATION | CAP-EVT-005 | ⚠ Corrected: 4xx-skip-retry is a **developer-implemented** pattern (`e.unrecoverable = true` / `setCompleted()`), not automatic; framework auto-detects only some unrecoverable errors. Revive/delete service pattern + OTel metrics verified; thresholds stay ORG (G-32) |
+| #6 Event Hub default broker | ACCEPTED | CAP-EVT-006 | "The new default offering" verified verbatim; broker matrix stays gap G-31 |
+| #7 Local messaging for local dev | DOWNGRADED | CAP-EVT-007 | Medium → **Low** (developer experience); ⚠ tunneling-service qualifier added per exact wording |
+
+### Batch summary
+
+| Metric | Data | Transactions | Events |
+|---|---|---|---|
+| Candidates reviewed | 10 (9 newly dispositioned) | 5 (+1 cross-category) | 7 |
+| Accepted unchanged | 3 | 2 | 2 |
+| Accepted with modification | 3 | 2 | 3 |
+| Merged | 1 out-of-inventory absorbed (#4) + CAP-PERF #6 in | CAP-LOGIC #5 in | 0 |
+| Downgraded | 2 | 1 | 3 |
+| Rejected | 0 | 0 | 0 |
+| Deferred | 0 | 0 | 0 |
+| New rules | 1 (CAP-DB-008) | 0 | 0 |
+| **Final rules** | **10** | **6** | **7** |
+
+Batch severity: **2 Critical / 9 High / 9 Medium / 3 Low**. Both Critical rules (CAP-EVT-002, CAP-EVT-003) carry explicit justifications tied to SAP's own documented failure vocabulary (phantom/lost events; must-be-idempotent). Authority: 7 SAP-REQ, 16 SAP-REC. Runtime: 7 Node.js-only (CAP-DB-003/-005/-006/-009, CAP-TXN-002/-003/-006), 2 Java-only (CAP-DB-010, CAP-TXN-004), 14 Both.
+
+### Verification corrections applied in this batch (summary)
+
+1. `cds.tx(req)`: "not required nor recommended", not "deprecated" (CAP-TXN-003).
+2. Distributed atomicity: Node-only quote; Java silent — reworded (CAP-TXN-005).
+3. 4xx retry skipping: developer-implemented, not framework-automatic (CAP-EVT-005).
+4. Event Hub localhost limitation: "unless you use a tunneling service" qualifier (CAP-EVT-007).
+5. `/docs/node.js/queue` is 404 — the event-queues guide is the citable source (source map updated); Node queue API is `cds.queued()`/`cds.unqueued()`.
+6. `@cap-js` migration authority: "highly recommended" = SAP-REC, no removal date (CAP-DB-003).
+
+### Scope items reviewed with no rule created (Batch 3)
+
+- **Mandating the outbox pattern universally** — deliberately NOT done: the queue is the default and CAP-EVT-002 protects the default; SAP documents immediate dispatch as a legitimate API, so mandating outbox-everywhere would exceed the evidence.
+- **Exactly-once delivery** — no rule can assert it: SAP explicitly documents the opposite; treated via idempotency (CAP-EVT-003).
+- **Event ordering guarantees** — SAP documents none on the verified pages; no rule authored (would manufacture a guarantee); ordering-sensitive designs fall under CAP-TXN-005's partial-failure design duty.
+- **Bulk operations / batch sizing** — Java documents a max-batch-size default; tuning is performance material → future CAP-PERF.
+- **Indexes** — no CAP-level index guidance found on the verified pages beyond performance modeling → future CAP-PERF.
+- **Retry tuning values** (maxAttempts/backoff) — documented defaults exist; concrete tuning is ORG operations policy (G-32/G-33), not a rule.
