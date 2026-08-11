@@ -991,7 +991,7 @@ Diagnostic logging of business identifiers is fine. Temporarily elevated log lev
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-002, CAP-SEC-015; future CAP-INT destination rule cross-references (no credentials in destination config) |
+| **Related rules** | CAP-SEC-002, CAP-SEC-015; CAP-INT-002/-006 cross-reference this rule for destination-credential hygiene |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

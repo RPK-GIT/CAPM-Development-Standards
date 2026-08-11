@@ -32,9 +32,9 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-24 | Data | Raw-SQL governance in Java (`JdbcTemplate` permitted, no criteria/review rules) | mechanism-only | ORG criteria still open. *Isolation/documentation duty now CAP-DB-004* |
 | G-25 | Data | PostgreSQL-in-production criteria ("edge cases" undefined; no MT/extensibility support) | mechanism-only | ORG decision matrix still open. *ADR duty per deviation now CAP-DB-001* |
 | G-26 | Data | Test-data vs production seed-data separation policy (beyond `cds deploy --production` semantics) | mechanism-only | ORG data policy |
-| G-27 | Integration | Node.js resilience for remote calls (timeouts/retries/circuit breakers — Java gets ResilienceDecorator, Node only service-mesh pointer) | mechanism-only | ORG resilience standard for Node |
-| G-28 | Integration | Destination governance (naming, per-environment segregation, credential rotation) | silent | ORG destination standard |
-| G-29 | Integration | Live remote access vs replication/federation thresholds | mechanism-only | ORG criteria |
+| G-27 | Integration | Node.js resilience for remote calls (timeouts/retries/circuit breakers — Java gets ResilienceDecorator, Node only community/mesh pointers) | mechanism-only | ORG resilience standard (mechanism + thresholds) still open. *The deliberate-failure-design duty is now CAP-INT-007* |
+| G-28 | Integration | Destination governance (naming, per-environment segregation, credential rotation) | silent | ORG destination standard still open. *MT retrieval-strategy decisions now CAP-INT-006; credential hygiene CAP-SEC-017* |
+| G-29 | Integration | Live remote access vs replication/federation thresholds | mechanism-only | ORG criteria still open. *Mashup/expand bounding now CAP-INT-005* |
 | G-30 | Events | Domain-event naming/namespacing/versioning scheme for own events | mechanism-only (examples only) | ORG event-design standard still open. *Modeled-event requirement now CAP-EVT-001* |
 | G-31 | Events | Broker selection matrix (Event Hub vs Event Mesh vs non-SAP brokers) | mechanism-only ("new default" statement only) | ORG selection policy still open. *Default + documented-reason duty now CAP-EVT-006* |
 | G-32 | Events | Dead-letter operations: ownership, alerting thresholds, SLAs ("manual intervention required") | explicit-gap | ORG runbook (feeds M9) still open. *The operational-process requirement itself is now CAP-EVT-005* |

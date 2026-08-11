@@ -232,3 +232,60 @@ Batch severity: **2 Critical / 9 High / 9 Medium / 3 Low**. Both Critical rules 
 - **Bulk operations / batch sizing** — Java documents a max-batch-size default; tuning is performance material → future CAP-PERF.
 - **Indexes** — no CAP-level index guidance found on the verified pages beyond performance modeling → future CAP-PERF.
 - **Retry tuning values** (maxAttempts/backoff) — documented defaults exist; concrete tuning is ORG operations policy (G-32/G-33), not a rule.
+
+---
+
+## Batch 4 — Business Logic & Integration (2026-08-11)
+
+Verification basis: one targeted verification pass (handler mechanics; remote-service consumption and resilience) against live official documentation on 2026-08-11. Corrections marked ⚠. Final rules: [business-logic.md](../standards/rules/business-logic.md) (5), [integration.md](../standards/rules/integration.md) (7).
+
+### Business-logic candidates (6 remaining after Batches 2–3 consumed #1 and #5)
+
+| Candidate (candidate-rules.md §CAP-LOGIC) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #2 Correct phase usage | ACCEPTED WITH MODIFICATION | CAP-LOGIC-002 | Severity High → **Medium**; absorbs #4. ⚠ Verification nuances embedded: `before`/`after` "always executed concurrently" (Node); `on` sequential **for requests only** — concurrent for async events; phase-*purpose* framing is derivation from documented mechanics, labeled accordingly |
+| #3 `return super.init()` | DOWNGRADED | CAP-LOGIC-003 | High → **Medium** (loud-but-confusing failure, test-catchable). ⚠ Correction: SAP requires *calling* `super.init()`; its position is a documented handler-ordering choice, not a mandate to place it last |
+| #4 Collect errors via `req.error` | MERGED | → CAP-LOGIC-002 | Validation-*timing* concern folded into the phase rule; error-response mechanics stay with the future CAP-ERR category (canonical source re-verified: node.js/events) |
+| #6 Java handler registration + typed contexts | DOWNGRADED | CAP-LOGIC-004 | High → **Medium**; `EventHandler` interface "is required" (REQ element), typed contexts "whenever possible", async `@On` completion "not recommended" — all verified verbatim |
+| #7 Actions need `@On` handlers in Java | MERGED | → CAP-SRV-004 | Already covered by Batch 2 (runtime field + detection step 5); not re-authored |
+| #8 Java service layering | ACCEPTED | CAP-LOGIC-005 | "Should be registered on an Application Service" verified verbatim (SAP-REC); Persistence Service scoped to technical concerns per SAP's own example |
+| — (batch scope: logic-placement anchor) | NEW RULE | CAP-LOGIC-001 | Domain behavior in event handlers on the owning service; grounded in custom-code (handlers as the documented mechanism) + concepts (determinations in event handlers); no verbatim "must" sentence exists, hence SAP-REC |
+
+### Integration candidates (7 reviewed)
+
+| Candidate (§CAP-INT) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 `cds import`, never copy CDS files | ACCEPTED WITH MODIFICATION | CAP-INT-001 | Absorbs #2. ⚠ Verification *upgrade*: "Always use OData V4 (`odata`) when calling another CAP service" is REQ-grade wording; the three documented copy-problems verified verbatim (incl. "CAP creates unneeded database tables and views") |
+| #2 OData V4 / EDMX between services | MERGED | → CAP-INT-001 | Same concern (exchange format + protocol) |
+| #3 Consumption views | DOWNGRADED | CAP-INT-003 | High → **Medium**: "always prefer" verified, but views are formally optional; coupling/maintainability concern |
+| #4 No credentials in destination config | MERGED | → CAP-SEC-017 | Already covered by Batch 1 (SEC-017 cites the consuming-services warning); not re-authored |
+| #5 Mock remote services | ACCEPTED | CAP-INT-004 | Mechanics verified (auto-mock with `cds watch`, `cds mock`, CSV in `srv/external/data`); Java `--with-mocks` is REQ-phrased ("make sure to add") |
+| #6 Cross local/remote expands | ACCEPTED | CAP-INT-005 | High kept: documented stability warning + URL-length mechanism verified; "Consider to reject expands… on a list of items" is the documented advice (SAP-REC) |
+| #7 MT destination retrieval strategy | ACCEPTED | CAP-INT-006 | Subscriber-tenant default + `alwaysProvider`/`AlwaysProvider` override verified on both runtime pages |
+| — (batch scope: consumption mechanism) | NEW RULE | CAP-INT-002 | Remote systems via CAP remote services + destinations; REQ elements verified: Java Remote Services "need to be configured explicitly" / never auto-created; on-premise requires Connectivity service + Cloud Connector. ⚠ Correction: "Destination service recommended for productive use" is NOT a quotable SAP sentence — phrased as the documented mechanism instead |
+| — (batch scope: reliability) | NEW RULE | CAP-INT-007 | Design remote calls for failure. Guarantee discipline: CAP Node.js has "no resilience library provided out of the box"; the Java Remote Services page documents **no** timeout/retry options (verified absence); SAP names options (service mesh, Java Cloud SDK `ResilienceDecorator`, Node community packages) without prescribing — duty = SAP-REC, mechanism choice = GEN, thresholds = ORG (G-27) |
+
+### Batch summary
+
+| Metric | Business Logic | Integration |
+|---|---|---|
+| Candidates reviewed | 6 | 7 |
+| Accepted unchanged | 1 | 3 |
+| Accepted with modification | 1 | 1 |
+| Merged | 2 (#4 internal; #7 → CAP-SRV-004) | 2 (#2 internal; #4 → CAP-SEC-017) |
+| Downgraded | 2 | 1 |
+| Rejected | 0 | 0 |
+| Deferred | 0 | 0 |
+| New rules | 1 (CAP-LOGIC-001) | 2 (CAP-INT-002, CAP-INT-007) |
+| **Final rules** | **5** | **7** |
+
+Batch severity: **0 Critical / 3 High / 9 Medium / 0 Low** (High: CAP-INT-001 shadow-persistence integrity, CAP-INT-002 auth/tenant-adjacent bypass, CAP-INT-005 production stability). Authority: 2 SAP-REQ (CAP-LOGIC-003, CAP-INT-001), 10 SAP-REC. Runtime: 1 Node.js-only (CAP-LOGIC-003), 2 Java-only (CAP-LOGIC-004/-005), 9 Both.
+
+### Scope items reviewed with no rule created (Batch 4)
+
+- **Generic layered-architecture prescriptions for business logic** — deliberately not imposed: CAP documents handlers-on-services, not layer counts (consistent with Batch 2's rejection).
+- **Handler error-response mechanics** (`req.error`/`reject` rendering, i18n, sanitization) — deferred to the future CAP-ERR category; only validation *timing* is governed here (CAP-LOGIC-002).
+- **Business-logic idempotency/side-effect rules** — owned by CAP-EVT-003 (async) and CAP-TXN-005 (partial failure); cross-referenced, not restated.
+- **Batch requests to remote systems / payload-mapping conventions** — no normative SAP guidance found beyond mechanics; mapping style is design, not rule material.
+- **Circuit-breaker mandates and concrete timeout values** — SAP names no thresholds and prescribes no mechanism; remains ORG gap G-27 (CAP-INT-007 enforces only the deliberate-decision duty).
+- **Integration-testing depth** — future CAP-TEST category; CAP-INT-004 covers only mockability of the inner loop.
