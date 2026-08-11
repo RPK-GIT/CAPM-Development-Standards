@@ -6,7 +6,7 @@ Severity and IDs are provisional. Authority: REQ = SAP-documented requirement, R
 
 **Total: 101 candidates** across 20 categories.
 
-> **Disposition status:** the **CAP-SEC** and **CAP-MT** sections below (plus CAP-DB #6 and CAP-OPS #3) have been formally dispositioned in Batch 1 — see [candidate-dispositions.md](candidate-dispositions.md) and the normative rules in [security.md](../standards/rules/security.md) / [multitenancy.md](../standards/rules/multitenancy.md). Their entries below are retained as research history; the catalog files are authoritative.
+> **Disposition status:** the **CAP-SEC**, **CAP-MT** (Batch 1) and **CAP-ARCH**, **CAP-CDS**, **CAP-SRV** (Batch 2) sections below — plus cross-category items CAP-DB #6, CAP-OPS #3, CAP-LOGIC #1 — have been formally dispositioned: see [candidate-dispositions.md](candidate-dispositions.md) and the normative rules in [security.md](../standards/rules/security.md), [multitenancy.md](../standards/rules/multitenancy.md), [architecture.md](../standards/rules/architecture.md), [cds-modeling.md](../standards/rules/cds-modeling.md), [services-apis.md](../standards/rules/services-apis.md). Dispositioned entries below are retained as research history; the catalog files are authoritative.
 
 ## CAP-ARCH — Architecture & project structure (8)
 

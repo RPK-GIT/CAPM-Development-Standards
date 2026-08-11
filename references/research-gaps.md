@@ -23,12 +23,12 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-15 | Security | `model-strict` (Java) not mandated; no Node equivalent lint | mechanism-only | ORG: decide to require it + CI check. *CAP-SEC-004 forbids weakening defaults and records `model-strict` adoption as an observation pending this decision* |
 | G-16 | Privacy | Legal sufficiency of DPP features explicitly disclaimed by SAP; retention periods, legal grounds | explicit-gap | Legal/compliance per jurisdiction |
 | G-17 | Privacy | Data Retention Manager guide **under construction**; `@cap-js/data-privacy` (DPI) is the apparent forward path | in-flux | Watch SAP docs; interim ORG erasure approach |
-| G-18 | Modeling | CDS file organization at scale (multi-file layout, index.cds conventions) | silent | ORG convention; feeds `CAP-CDS`/`CAP-ARCH` |
-| G-19 | Modeling | Naming vocabulary beyond casing (services, actions, events, multi-word style) | mechanism-only (examples only) | ORG naming standard |
-| G-20 | Modeling | Enum vs CodeList decision rule; composition depth limits; draft-enablement criteria | silent | ORG modeling guidance |
-| G-21 | Architecture | Microservice-cut criteria ("late-cut" advised, no thresholds) | mechanism-only | ORG decision framework (M1 gate input) |
+| G-18 | Modeling | CDS file organization at scale (multi-file layout, index.cds conventions) | silent | ORG convention still open. *Baseline layout/conventions now CAP-ARCH-001; concern separation CAP-CDS-007* |
+| G-19 | Modeling | Naming vocabulary beyond casing (services, actions, events, multi-word style) | mechanism-only (examples only) | ORG naming standard still open. *SAP's documented checklist is now CAP-CDS-001* |
+| G-20 | Modeling | Enum vs CodeList decision rule; composition depth limits; draft-enablement criteria | silent | ORG modeling guidance still open. *Draft mechanics governed by CAP-SRV-007; containment semantics by CAP-CDS-006* |
+| G-21 | Architecture | Microservice-cut criteria ("late-cut" advised, no thresholds) | mechanism-only | ORG criteria still open. *Modulith default + ADR-per-cut now enforced by CAP-ARCH-006/-007* |
 | G-22 | Architecture | API/service versioning, breaking-change and deprecation management | silent | ORG API lifecycle policy |
-| G-23 | Architecture | Multi-protocol exposure policy (same service via OData+REST+GraphQL); GraphQL adapter support stance (plugin, not core) | silent | ORG protocol governance |
+| G-23 | Architecture | Multi-protocol exposure policy (same service via OData+REST+GraphQL); GraphQL adapter support stance (plugin, not core) | silent | ORG protocol governance still open. *Exposure explicitness now enforced by CAP-SRV-006* |
 | G-24 | Data | Raw-SQL governance in Java (`JdbcTemplate` permitted, no criteria/review rules) | mechanism-only | ORG justification + review requirement |
 | G-25 | Data | PostgreSQL-in-production criteria ("edge cases" undefined; no MT/extensibility support) | mechanism-only | ORG decision matrix |
 | G-26 | Data | Test-data vs production seed-data separation policy (beyond `cds deploy --production` semantics) | mechanism-only | ORG data policy |

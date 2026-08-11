@@ -2,15 +2,15 @@
 
 The formal rule catalog describing what a production-grade CAP application looks like. Every rule follows [templates/rule-template.md](../../templates/rule-template.md) and carries a stable ID, severity, [authority level](../../docs/authority-levels.md), runtime applicability, and CAP version applicability.
 
-> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18 rules) and `CAP-MT` (6 rules)** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
+> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9) — 51 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
 
 ## Categories
 
 | Prefix | Category | File | Primary sources |
 |---|---|---|---|
-| `CAP-ARCH` | Architecture & project structure | [architecture.md](architecture.md) | CAP best practices, getting started |
-| `CAP-CDS` | Domain modeling & CDS | [cds-modeling.md](cds-modeling.md) | Domain modeling guide, CDS reference |
-| `CAP-SRV` | Services & APIs | [services-apis.md](services-apis.md) | Providing services guide, protocol adapters |
+| `CAP-ARCH` | Architecture & project structure — **7 rules active** | [architecture.md](architecture.md) | CAP best practices, getting started |
+| `CAP-CDS` | Domain modeling & CDS — **11 rules active** | [cds-modeling.md](cds-modeling.md) | Domain modeling guide, CDS reference |
+| `CAP-SRV` | Services & APIs — **9 rules active** | [services-apis.md](services-apis.md) | Providing services guide, protocol adapters |
 | `CAP-LOGIC` | Business logic & event handlers | [business-logic.md](business-logic.md) | Node.js/Java runtime docs |
 | `CAP-DB` | Data access & persistence | [data-persistence.md](data-persistence.md) | Databases guide, CQL/CQN |
 | `CAP-TXN` | Transactions | [transactions.md](transactions.md) | Node.js `cds.tx`, Java ChangeSet docs |

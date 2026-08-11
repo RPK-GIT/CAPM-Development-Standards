@@ -80,7 +80,7 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 | Phase | Deliverable | Status |
 |---|---|---|
 | 1 — Research & Foundation | Repo architecture, source map, candidate rules, gaps, lifecycle & review/development models, AI rule family | ✅ this commit |
-| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | 🔶 in progress — Security (18) & Multitenancy (6) done, [dispositions](references/candidate-dispositions.md) |
+| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | 🔶 in progress — 51 rules: Security (18), Multitenancy (6), Architecture (7), CDS (11), Services (9); [dispositions](references/candidate-dispositions.md) |
 | 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | ⬜ |
 | 4 — Pilot & Calibration | Run reviews against real projects, calibrate severities, close gaps in [research-gaps.md](references/research-gaps.md) | ⬜ |
 
