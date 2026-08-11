@@ -12,15 +12,15 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-04 | Performance | Budgets/SLOs, load-test methodology, sizing (pools, instances), concrete pagination values | mechanism-only | ORG NFR standard per project (M0); defaults in `CAP-PERF` |
 | G-05 | Performance | N+1 in custom handler code (no explicit SAP rule; `$expand` primitives documented) | mechanism-only | ORG rule candidate: no queries in loops — use expands/deep reads |
 | G-06 | Security | Authorization audit trail — CAP does **not** log authz successes/failures automatically | explicit-gap | ORG custom-handler pattern needed |
-| G-07 | Security | Rate limiting: named a developer responsibility, no thresholds/implementation | explicit-gap | ORG limits + implementation choice (app vs route service) |
-| G-08 | Security | Node.js `$expand` depth limiting requires custom handler — no reference implementation | explicit-gap | ORG reference handler + max depth |
+| G-07 | Security | Rate limiting: named a developer responsibility, no thresholds/implementation | explicit-gap | ORG limits + implementation choice (app vs route service). *Decision enforced (not the values) by CAP-SEC-014* |
+| G-08 | Security | Node.js `$expand` depth limiting requires custom handler — no reference implementation | explicit-gap | ORG reference handler + max depth. *Decision enforced by CAP-SEC-014* |
 | G-09 | Security | Content Security Policy required ("applications have to configure CSP") but no baseline given | explicit-gap | ORG CSP baseline |
 | G-10 | Security | IAS-without-AMS authorization mapping not standardized | explicit-gap | ORG: mandate AMS (aligned with SAP IAS-first direction) |
 | G-11 | Security | Malware scanning for uploads: custom handlers required, no reference pattern | explicit-gap | ORG pattern for file-upload endpoints |
-| G-12 | Security | Java composition-child authorization gap: documented, no standard mitigation | explicit-gap | ORG mandatory review/custom-handler rule (candidate CAP-SEC #11) |
+| G-12 | Security | Java composition-child authorization gap: documented, no standard mitigation | explicit-gap | Review duty now formalized as CAP-SEC-011; a reusable ORG mitigation pattern (reference handler) still open |
 | G-13 | Security | Secret rotation cadence ("rotate regularly", no interval) | mechanism-only | ORG rotation periods |
 | G-14 | Security | Role-collection governance / least-privilege review process | silent | ORG governance with BTP admins |
-| G-15 | Security | `model-strict` (Java) not mandated; no Node equivalent lint | mechanism-only | ORG: decide to require it + CI check |
+| G-15 | Security | `model-strict` (Java) not mandated; no Node equivalent lint | mechanism-only | ORG: decide to require it + CI check. *CAP-SEC-004 forbids weakening defaults and records `model-strict` adoption as an observation pending this decision* |
 | G-16 | Privacy | Legal sufficiency of DPP features explicitly disclaimed by SAP; retention periods, legal grounds | explicit-gap | Legal/compliance per jurisdiction |
 | G-17 | Privacy | Data Retention Manager guide **under construction**; `@cap-js/data-privacy` (DPI) is the apparent forward path | in-flux | Watch SAP docs; interim ORG erasure approach |
 | G-18 | Modeling | CDS file organization at scale (multi-file layout, index.cds conventions) | silent | ORG convention; feeds `CAP-CDS`/`CAP-ARCH` |
@@ -39,15 +39,16 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-31 | Events | Broker selection matrix (Event Hub vs Event Mesh vs non-SAP brokers) | mechanism-only ("new default" statement only) | ORG selection policy |
 | G-32 | Events | Dead-letter operations: ownership, alerting thresholds, SLAs ("manual intervention required") | explicit-gap | ORG runbook (feeds M9) |
 | G-33 | Events | Long-running/background-work idempotency, retry, compensation patterns (no distributed atomicity) | mechanism-only | ORG async-work standard |
-| G-34 | Multitenancy | Tenant-upgrade orchestration: zero-downtime, batching, canary tenants, rollback | mechanism-only | ORG upgrade runbook |
+| G-34 | Multitenancy | Tenant-upgrade orchestration: zero-downtime, batching, canary tenants, rollback | mechanism-only | ORG upgrade runbook. *The upgrade-before-serve invariant itself is now CAP-MT-005* |
 | G-35 | Extensibility | Extension-allowlist content (field caps, namespaces, annotation whitelist) | explicit-gap (mechanism default-forbidden) | ORG per-product allowlist |
 | G-36 | Operations | Consolidated production-readiness / go-live checklist (SAP has none; prep scattered in to-cf guide) | silent | This standard's M9 gate fills this gap |
 | G-37 | Operations | Alerting thresholds, probe intervals, CF readiness-check tooling gap workaround | mechanism-only | ORG ops standard |
 | G-38 | Operations | Container/image policy for Kyma (scanning, signing, base-image updates) | silent | ORG container policy |
 | G-39 | CI/CD | Quality gates, branch policies, security scanning, artifact retention, blue-green/canary | mechanism-only (scaffolding only) | ORG pipeline standard (feeds `CAP-CICD`) |
 | G-40 | Versions | Dependency-update SLA (patch within N days); no concrete EOL dates published per CAP version | mechanism-only | ORG SLA; track releases page |
-| G-41 | AI/MCP | MCP adapter governance: SAP documents missing protections (injection, rate limits, audit) with no timeline; `@cap-js/mcp-server` has no stability label or security guidance | explicit-gap / in-flux | ORG AI-exposure policy before any use beyond local dev |
+| G-41 | AI/MCP | MCP adapter governance: SAP documents missing protections (injection, rate limits, audit) with no timeline; `@cap-js/mcp-server` has no stability label or security guidance | explicit-gap / in-flux | ORG AI-exposure policy before any use beyond local dev. *Governance requirement formalized as CAP-SEC-018; the concrete compensating-controls policy is still this open ORG decision* |
 | G-42 | Docs stability | capire URL churn (Jan 2026 restructure; several pages 404/unreleased/under construction) | in-flux | Quarterly re-verification per [version-management](../docs/version-management.md) |
+| G-43 | Security | XSUAA→IAS migration policy for **existing** applications: SAP recommends IAS for new projects and provides cross-consumption as a bridge, but mandates no migration or timeline for existing XSUAA apps | mechanism-only | ORG migration policy (whether/when to migrate, per-app criteria). Referenced by CAP-SEC-006, which covers new projects only |
 
 ## How gaps are closed
 

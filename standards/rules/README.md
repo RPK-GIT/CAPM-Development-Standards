@@ -2,7 +2,7 @@
 
 The formal rule catalog describing what a production-grade CAP application looks like. Every rule follows [templates/rule-template.md](../../templates/rule-template.md) and carries a stable ID, severity, [authority level](../../docs/authority-levels.md), runtime applicability, and CAP version applicability.
 
-> **Status:** The catalog files below are established with the category scheme; rules are authored in **Phase 2** from the researched inventory in [references/candidate-rules.md](../../references/candidate-rules.md). Candidate rules are *not yet normative* — do not cite them in reviews until promoted into a category file here.
+> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18 rules) and `CAP-MT` (6 rules)** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
 
 ## Categories
 
@@ -16,9 +16,9 @@ The formal rule catalog describing what a production-grade CAP application looks
 | `CAP-TXN` | Transactions | [transactions.md](transactions.md) | Node.js `cds.tx`, Java ChangeSet docs |
 | `CAP-INT` | Integration & remote services | [integration.md](integration.md) | Consuming services guide |
 | `CAP-EVT` | Events & messaging | [events-messaging.md](events-messaging.md) | Messaging guide |
-| `CAP-MT` | Multitenancy | [multitenancy.md](multitenancy.md) | Multitenancy/MTX guide |
+| `CAP-MT` | Multitenancy — **6 rules active** | [multitenancy.md](multitenancy.md) | Multitenancy/MTX guide |
 | `CAP-EXT` | Extensibility | [extensibility.md](extensibility.md) | Extensibility guide |
-| `CAP-SEC` | Security | [security.md](security.md) | Security/authorization/authentication guides |
+| `CAP-SEC` | Security — **18 rules active** | [security.md](security.md) | Security/authorization/authentication guides |
 | `CAP-PRIV` | Data privacy & audit | [data-privacy.md](data-privacy.md) | Data privacy guide |
 | `CAP-ERR` | Error handling | [error-handling.md](error-handling.md) | Runtime error-handling docs |
 | `CAP-LOG` | Logging & observability | [logging-observability.md](logging-observability.md) | `cds.log`, telemetry docs |

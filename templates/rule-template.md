@@ -16,6 +16,7 @@ Every Layer 2 (`CAP-*`) and Layer 3 (`AI-*`) rule uses this exact structure. All
 | **Runtime** | Node.js / Java / Both |
 | **CAP version** | Version range the rule is verified for (e.g., `@sap/cds >= 8`, `CAP Java >= 3`) |
 | **Status** | Active / Deprecated (→ successor ID) / Draft |
+| **Related rules** | Cross-references to related rule IDs (or `None`) |
 | **Last verified** | YYYY-MM-DD against the cited SAP reference |
 
 ### Rule statement
@@ -48,4 +49,5 @@ Official URL(s) supporting the rule. For GEN/ORG/AI-REC authority: `None (author
 - **MUST** is used for Critical/High rules and all SAP-REQ rules; **SHOULD** for Medium/Low recommendations.
 - **Runtime** is `Both` only if the rule is meaningful in Node.js *and* Java; otherwise name the runtime and, where a counterpart rule exists for the other runtime, cross-link it.
 - **CAP version**: if guidance predates or changes with a CAP release, state the boundary explicitly (e.g., "≥ cds 7: use `@cap-js/sqlite`; older: deprecated `sqlite3` service"). Never write "current version" — name it.
-- **Detection guidance** must be executable by a reviewer with repository access only (no runtime environment assumed); note where dynamic verification (running tests, deploying) is additionally required.
+- **Detection guidance** must be executable by a reviewer with repository access only (no runtime environment assumed); note where dynamic verification (running tests, deploying) is additionally required. Write it as a numbered review procedure, not prose.
+- An optional **Implementation guidance** section (2–5 bullets, after Rationale) may state what to do *while building* — it must stay guidance, not a tutorial.

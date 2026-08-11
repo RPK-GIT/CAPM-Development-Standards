@@ -44,7 +44,8 @@ See [docs/standard-architecture.md](docs/standard-architecture.md) for the full 
 ├── references/
 │   ├── sap-cap-sources.md     ← source map of official SAP CAP documentation
 │   ├── research-gaps.md       ← where SAP guidance ends and org policy must begin
-│   └── candidate-rules.md     ← researched candidate rule inventory (input to Layer 2)
+│   ├── candidate-rules.md     ← researched candidate rule inventory (input to Layer 2)
+│   └── candidate-dispositions.md ← what happened to each candidate per authored batch
 └── templates/
     ├── rule-template.md
     ├── review-report-template.md
@@ -79,7 +80,7 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 | Phase | Deliverable | Status |
 |---|---|---|
 | 1 — Research & Foundation | Repo architecture, source map, candidate rules, gaps, lifecycle & review/development models, AI rule family | ✅ this commit |
-| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | ⬜ next |
+| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | 🔶 in progress — Security (18) & Multitenancy (6) done, [dispositions](references/candidate-dispositions.md) |
 | 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | ⬜ |
 | 4 — Pilot & Calibration | Run reviews against real projects, calibrate severities, close gaps in [research-gaps.md](references/research-gaps.md) | ⬜ |
 
