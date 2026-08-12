@@ -14,6 +14,7 @@ Canonical output format for CAPM Standard reviews ([review model](../reviews/rev
 | **Standard version** | CAPM Engineering Standard @ <commit/tag> |
 | **Scope** | full / milestone Mx / categories |
 | **Review type** | initial / re-review of <report ref> |
+| **Review mode** | DEVELOPMENT / RETROSPECTIVE — per [project-profile.md review modes](../development/project-profile.md); when the profile milestone is `LIVE`, append: "deployed application — findings represent current operational risk" |
 
 ## 1. Project profile
 Runtime, CAP versions (from lockfile/POM), Node/JDK versions, databases per profile, protocols,
@@ -31,7 +32,13 @@ tenancy model, deployment target, auth configuration per profile, test setup.
 (per the [milestone gate-result model](../development/rule-milestone-matrix.md#13-milestone-gate-results); uncovered HARD-GATE violation ⇒ FAIL; missing required evidence ⇒ NOT READY). ORG-PENDING rule findings are labeled as such (matrix §1.6).
 
 ## 3. Defects (rule violations)
-Ordered by severity. One block per FAIL:
+Ordered by severity. One block per FAIL. **Finding-consolidation convention:** when multiple
+rules identify the same underlying implementation defect, write ONE root-finding block instead
+of repeating it per rule — heading `### Root finding: <root cause> — FAIL — <highest severity>`,
+first line `**Affected rules:** <ID (severity/gate)>, <ID (severity/gate)>, …` — keeping every
+rule's own evidence inside the block and every per-rule verdict in §8. The defect counts **once**
+in §2's executive summary (per-rule verdict counts stay per-rule and say so). Never present one
+defect as several unrelated findings.
 
 ### <RULE-ID> — <Rule title> — FAIL — <Severity>
 - **Authority:** SAP-REQ / SAP-REC / GEN / ORG (from the rule; phrase "SAP requires" only for SAP-REQ)
@@ -46,6 +53,11 @@ authority if tied to a Low-severity SHOULD), with evidence. Never mixed with Sec
 
 ## 5. Cross-cutting assessments
 ### 5.1 Security concerns          (findings or "none found", with what was checked)
+Includes **cross-cutting security observations**: strong evidence of a security issue owned by a
+*later* milestone's rule. Each records: owning rule ID · owning milestone · evidence (file:line) ·
+risk · immediate-remediation recommendation where warranted · status (new / carried forward from
+<report ref>). They do not gate this milestone (matrix §1.1) but MUST be carried into every
+subsequent review until the owning milestone evaluates them.
 ### 5.2 Architecture concerns      (findings or "none found")
 ### 5.3 Production-readiness concerns (findings or "none found")
 ### 5.4 Missing tests              (behavior lacking coverage, per location)
@@ -56,7 +68,9 @@ config, deploy access, …).
 
 ## 7. Applicability decisions
 Rules marked NOT APPLICABLE with one-line reasons (e.g., "CAP-MT-*: single-tenant per
-profile §1").
+profile §1"). In RETROSPECTIVE mode additionally: the SUPPORTING selection rationale —
+each checklist supporting row listed as selected/not selected with the criterion
+((a) profile capability / (b) evidence artifacts exist / (c) related PRIMARY finding).
 
 ## 8. Full per-rule results
 Complete table: Rule ID | Verdict | Evidence pointer. (PASS verdicts also carry evidence.)

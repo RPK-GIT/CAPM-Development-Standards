@@ -99,7 +99,7 @@ Deliberate full exposure of simple, non-sensitive entities (code lists, value-he
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
 | **Related rules** | CAP-ARCH-002 (no custom frameworks), CAP-SRV-003, CAP-SRV-007, CAP-SRV-009 |
-| **Last verified** | 2026-08-11 |
+| **Last verified** | 2026-08-12 |
 
 ### Rule statement
 Behavior that CAP's generic providers serve out of the box — CRUD on exposed entities, deep reads/writes along compositions, pagination and sorting, search, draft choreography, media streaming, input-validation and authorization enforcement — MUST NOT be reimplemented in custom handlers. Custom `on` handlers replace the generic ones for their event; they are written only where domain logic genuinely differs from generic behavior, and MUST NOT hand-code what the generic handler would have done.
@@ -113,14 +113,15 @@ SAP: "a service definition is all we need to run a full-fledged server out of th
 - Actions/functions are the intended home for genuinely custom operations (CAP-SRV-004); in CAP Java they always need an `@On` handler — that is custom logic, not reimplementation.
 
 ### Evidence expected in code
-Handler files containing only domain-specific logic; CRUD events without handlers (served generically) or with `before`/`after` enrichment; no hand-written paging/filtering/CRUD plumbing.
+Handler files containing only domain-specific logic; CRUD events without handlers (served generically) or with `before`/`after` enrichment; no hand-written paging/filtering/CRUD plumbing. For remote-backed entities: delegation handlers forwarding `req.query` to the remote service (the documented integration pattern).
 
 ### Detection guidance
 1. List all custom handlers (`srv/**/*.js|ts`: `srv.on/before/after`; Java: `@On/@Before/@After` methods) with their events and entities.
 2. For each `on` handler on a CRUD event, determine the domain delta it implements. Handlers that re-code generic behavior (manual SELECT/INSERT mirroring the request, hand-built `$top/$skip` handling, manual deep-insert recursion, hand-rolled draft state machines) → FAIL with file:line.
-3. Check `before`/`after` handlers stay enrichment/validation — an `after` handler re-querying and rebuilding the whole result set is a reimplementation signal.
-4. Search for framework-duplicating utilities (custom pagination helpers, generic CRUD base classes) → FAIL (also cross-report CAP-ARCH-002).
-5. For each FAIL, name the CAP-native capability that should serve the behavior.
+3. **Remote-backed entities are exempt from step 2's reimplementation test:** handlers that delegate to a remote service are SAP's documented integration pattern (“Write a handler function to delegate a query to the remote service and run the incoming query on the external service” — e.g. `srv.on('READ', E, req => remote.run(req.query))`), i.e. required custom logic, not reimplementation. Do NOT flag them — but DO verify each delegation handler forwards (or deliberately maps) the incoming `req.query`; a delegation handler that discards the client query (losing `$filter`/`$top`/`$skip`/`$search` semantics) is still a FAIL under this rule. *(Detection clarification added 2026-08-12 from Phase 4 Pilot 1 — no change to rule statement, authority, or severity.)*
+4. Check `before`/`after` handlers stay enrichment/validation — an `after` handler re-querying and rebuilding the whole result set is a reimplementation signal.
+5. Search for framework-duplicating utilities (custom pagination helpers, generic CRUD base classes) → FAIL (also cross-report CAP-ARCH-002).
+6. For each FAIL, name the CAP-native capability that should serve the behavior.
 
 ### Good example
 ```js
@@ -147,6 +148,7 @@ Legitimate full `on` replacements exist: virtual/computed result sets, remote-ba
 ### SAP reference
 - https://cap.cloud.sap/docs/guides/services/served-ootb (generic providers; "coding reduces to real custom logic")
 - https://cap.cloud.sap/docs/guides/services/custom-code (`on` handlers run instead of generic handlers)
+- https://cap.cloud.sap/docs/guides/services/consuming-services (documented delegation pattern for remote-backed entities — verified 2026-08-12)
 
 ---
 

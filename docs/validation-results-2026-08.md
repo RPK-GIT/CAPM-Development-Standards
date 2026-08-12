@@ -130,3 +130,34 @@ No false positives observed; no rule wording prevented objective evaluation (ite
 | `/capm-develop` per standards | ✅ (D1–D4 incl. STOP behavior) |
 
 **All Phase 3 exit criteria satisfied.** Caveat, stated plainly: validation ran against **fixtures**, not production projects — the standard is *validated*, not *production-proven*. That distinction is exactly what the Phase 4 pilot exists to close.
+
+
+---
+
+# Addendum — Round 1 Calibration Execution (2026-08-12, post-Pilot 1)
+
+Executed after the [Round 1 calibration amendments](../pilots/round-1-calibration.md) (commit follows `bd0e637`). Scenario catalog grew 36 → **44** (P9–P10, F7–F8, E6, R5–R7). Modes as defined above; "PILOT" = executed against the real-project pilot inputs (read-only).
+
+## New scenarios (8/8 PASS)
+
+| # | Mode | Expected | Actual | Result |
+|---|---|---|---|---|
+| P9 | PILOT | `concurrent_paging: unknown` → CAP-PERF-001 NOT ASSESSABLE naming the flag | scs profile now carries `unknown` for 4 workload flags; validation walk → PERF-001 NOT ASSESSABLE listing `workload.concurrent_paging` (matches Pilot 1 §6 verbatim intent); never filtered to N/A | **PASS** |
+| P10 | TRANSIENT | owner-declared flag contradicted by repo → CONTRADICTORY, stop | scs profile variant `concurrent_edit: false # source: owner-declared` vs repo evidence (global `Variants` + `PurchaseReqnItemText` custom UPDATE) → validation step 4 → CONTRADICTORY profile finding, review stops | **PASS** |
+| F7 | PILOT | RETROSPECTIVE supporting selection bounded + per-row rationale | Checklist list (post-amendment): ARCH-003 selected (b: service artifacts; c: SRV-001 finding relates), CDS-007 (b: `app/services.cds`), SEC-014 (b: `@cds.query.limit` present), ERR-001 (b: 43 error-API sites), SEC-013 (a: CUSTOM-OPS ∧ REMOTE) — ERR-005 no longer listed. 5 selected, each with a named criterion, none outside the list. *Honest note: on this evidence-rich project the criteria select every listed row — the gains are the named rationale, the checklist bound, and ERR-005's removal* | **PASS** |
+| F8 | PILOT | SEC-013 appears as M3 SUPPORTING under CUSTOM-OPS ∧ (REMOTE ∨ MASHUP); non-gating | scs profile: `custom_operations: true` ∧ `remote_services: true` → matrix footnote ³ row fires; the Pilot 1 injection evidence (`interaction_srv.js` ≈L3640) would now be an in-scope SUPPORTING finding escalated per R6, and M3's gate still derives only from PRIMARY/FINAL-GATE rows | **PASS** |
+| E6 | PILOT | delegation handlers not flagged; query-discarding handler still FAILs | SRV-002 detection re-run with new step 3 on the real handler file: **57** `run(req.query)` delegation sites (e.g. L89, L173) → exempt per the documented pattern; `Variants` READ (L608, local entity, discards `req.query`) → still FAIL. Pilot verdict unchanged — no weakening | **PASS** |
+| R5 | WALKTHROUGH (pilot report) | one root-finding block, verdicts retained, counted once | Pilot findings re-rendered: `Root finding: ownership check bypassable — FAIL — High` with `Affected rules: CAP-SEC-010 (High/SOFT), CAP-SRV-003 (Medium/SOFT)`, each rule's evidence kept, §8 verdicts unchanged, §2 counts the defect once | **PASS** |
+| R6 | WALKTHROUGH (pilot report) | cross-cutting security observation with owning rule/milestone + carry-forward | Pilot §5 observation re-rendered per new §5.1 record: owning rule CAP-SEC-013 · owning milestone M4 · evidence file:line · risk · immediate-remediation recommendation · status "new"; carry-forward duty into the next scs review until M4 evaluates it | **PASS** |
+| R7 | WALKTHROUGH (pilot report) | header states mode; LIVE → current operational risk | Pilot header would read `Review mode: RETROSPECTIVE — deployed application — findings represent current operational risk` (profile milestone `LIVE`); DEVELOPMENT wording verified against the fixture context | **PASS** |
+
+## Re-runs of affected pre-existing scenarios (4/4 PASS)
+
+| # | Why affected | Actual | Result |
+|---|---|---|---|
+| P1 | workload schema gained `unknown` | Node fixture profile (all-boolean workload) still validates — booleans remain legal; source notes optional | **PASS** |
+| P2 | same | Java fixture profile still validates | **PASS** |
+| F6 | supporting-selection change | DEVELOPMENT-mode criterion is unchanged; fixture M3 set remains exactly the 10 rules | **PASS** |
+| G3 | SUPPORTING non-gating clarification | Fixture gate results unchanged — all fixture gates derived from PRIMARY rows; the clarification (matrix §1.1/§1.2) alters no executed scenario's outcome | **PASS** |
+
+**Result: 44/44 scenarios hold** (36 original — 4 re-executed where affected, 32 unaffected by inspection of what changed — plus 8 new). Note: the two fixture reports predate the template's new *Review mode* header field and §5.1 observation format; they remain valid as historical illustrations (R1's required-content list was deliberately left unchanged; R7 governs new reports).

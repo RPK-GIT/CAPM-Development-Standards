@@ -13,11 +13,11 @@ Verified against the catalog on **2026-08-12** (all 134 rules mapped; validation
 | Class | Meaning |
 |---|---|
 | **PRIMARY** | The milestone where the rule is mainly evaluated — evidence is produced and assessed here first |
-| **SUPPORTING** | Considered at this milestone; primarily owned elsewhere |
+| **SUPPORTING** | Considered at this milestone; primarily owned elsewhere. Findings are reported (security rules additionally escalate via the report's cross-cutting security observation mechanism) but do **not** by themselves gate this milestone — the gate class applies where the rule is PRIMARY or FINAL-GATE *(clarified 2026-08-12, Round 1 calibration)* |
 | **FINAL-GATE** | Must be explicitly re-verified before this milestone can PASS (typically after later work could have invalidated earlier verification) |
 | **CONDITIONAL** | Applies only when the project uses the relevant capability (see §1.4). Conditions combine with the other classes — a rule can be CONDITIONAL *and* PRIMARY |
 
-### 1.2 Gate class (per rule — applied wherever the rule is evaluated)
+### 1.2 Gate class (per rule — applied where the rule is evaluated as PRIMARY or FINAL-GATE; SUPPORTING appearances are non-gating, see §1.1)
 
 | Class | Meaning | Passage on violation |
 |---|---|---|
@@ -120,6 +120,8 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-SEC-002 | C | REQ | B | **H** | — | M6 | — | M8, M9 |
 | CAP-SEC-003 | C | REQ | N | **H** | — | M6 | — | M8 |
 | CAP-SEC-004 | H | REC | J | **H**² | — | M6 | — | M8 |
+³ | M6 |
+⁴ | — |
 | CAP-SEC-005 | C | REQ | J | **H** | — | M6 | — | M8 |
 | CAP-SEC-006 | M | REC | B | S | NEW-PROJECT | M1 | — | — |
 | CAP-SEC-007 | H | REQ | B | **H** | IAS | M6 | M3 | — |
@@ -128,8 +130,7 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-SEC-010 | H | REC | B | S | INSTANCE-AUTH | M3 | M4 | M6 |
 | CAP-SEC-011 | H | REQ | B | **H** | — | M3 | — | M6 |
 | CAP-SEC-012 | H | REC | B | S | — | M3 | M4 | M6 |
-| CAP-SEC-013 | C | REQ | B | **H** | — | M4 | — | M6 |
-| CAP-SEC-014 | M | REQ | B | S | — | M6 | M3 | — |
+| CAP-SEC-013 | C | REQ | B | **H** | — | M4 | M3| CAP-SEC-014 | M | REQ | B | S | — | M6 | M3 | — |
 | CAP-SEC-015 | C | REQ | B | **H** | — | M6 | — | M8, M9 |
 | CAP-SEC-016 | M | REC | B | S | — | M4 | — | M6 |
 | CAP-SEC-017 | H | REC | B | **H**² | — | M6 | M5 | M8 |
@@ -151,8 +152,7 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-ERR-002 | H | REQ | N | **H** | — | M4 | — | M6 |
 | CAP-ERR-003 | H | REC | B | S | — | M4 | — | — |
 | CAP-ERR-004 | M | REQ | N | S | ERROR-HOOKS | M4 | — | — |
-| CAP-ERR-005 | M | REC | B | S | UI | M4 | M3 | — |
-| CAP-ERR-006 | H | REQ | B | **H** | — | M4 | — | M6 |
+| CAP-ERR-005 | M | REC | B | S | UI | M4 | —| CAP-ERR-006 | H | REQ | B | **H** | — | M4 | — | M6 |
 | CAP-LOG-001 | M | REC | B | S | — | M4 | — | — |
 | CAP-LOG-002 | M | REC | B | S | — | M8 | — | M9 |
 | CAP-LOG-003 | M | REC | B | S | — | M9 | M5 | — |
@@ -193,6 +193,9 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 
 **Footnoted classifications (deviations from a naive severity/authority mapping):**
 ¹ CAP-TXN-005 and CAP-VER-001 are SAP-REQ-worded but SOFT: TXN-005's own statement provides a documented-acceptance path for partial-failure risk; VER-001's failure mode is reproducibility drift with a routine remediation (regenerate lockfile) — blocking is disproportionate.
+³ CAP-SEC-013's M3 SUPPORTING appearance is conditional on `CUSTOM-OPS ∧ (REMOTE ∨ MASHUP)` (custom operations exist and remote services/mashups are consumed — the surface where handler-built queries/URLs appear before M4). Added 2026-08-12 (Round 1 calibration, Pilot 1 evidence: a genuine injection pattern was reviewable at M3 but out of scope). Non-gating at M3 per §1.1; the HARD gate applies at its PRIMARY milestone M4 and FINAL-GATE M6.
+⁴ CAP-ERR-005's former M3 SUPPORTING appearance was removed 2026-08-12 (Round 1 calibration): Pilot 1 showed the finding is valid but not actionable until M4 handler work — the M3 error-contract sketch is CAP-ERR-001's subject, which remains M3 SUPPORTING. No severity/authority change.
+
 ² HARD despite SAP-REC authority: CAP-SEC-004 (weakened authentication surface), CAP-SEC-017 (secrets exposure — a named critical candidate), CAP-SEC-018 (ungoverned MCP exposure incl. the documented SAP-API prohibition), CAP-LOG-005 (public actuators = credential-grade disclosure), CAP-TEST-007 (mandatory testing of critical security behavior — named hard-gate candidate), CAP-PRIV-001 (unclassified personal data disables every downstream protection). Gate class follows consequence, not wording strength.
 
 ---
@@ -234,7 +237,7 @@ A milestone review loads: **(1)** the milestone's PRIMARY + FINAL-GATE rules, **
 - **134/134 rules mapped**; every rule has ≥ 1 PRIMARY milestone, a gate class, and an evidence path (its catalog Detection guidance). **No orphans.**
 - Primary distribution: M0: 0 (profile/requirements milestone — 3 SUPPORTING appearances) · M1: 15 · M2: 18 · M3: 15 · M4: 29 · M5: 16 · M6: 14 · M7: 7 · M8: 15 · M9: 5.
 - Gate classes: **34 HARD · 94 SOFT · 6 ADVISORY** (ADVISORY = the six Low-severity rules; all 11 Critical rules are HARD).
-- Applicability: 134 PRIMARY assignments; 52 rules carry SUPPORTING appearances; 34 rules carry FINAL-GATE re-verifications (several at two milestones); 55 rules carry capability conditions; 25 are runtime-scoped (17 Node.js, 8 Java).
+- Applicability: 134 PRIMARY assignments; 52 rules carry SUPPORTING appearances (Round 1 calibration 2026-08-12: CAP-SEC-013 gained a conditional M3 appearance, CAP-ERR-005's M3 appearance removed — net unchanged); 34 rules carry FINAL-GATE re-verifications (several at two milestones); 55 rules carry capability conditions; 25 are runtime-scoped (17 Node.js, 8 Java).
 - All 11 Critical rules: HARD, mapped, evidence-defined, M9-visible (§3).
 - ORG rules marked `ORG-PENDING`; GEN rules classified by risk (§1.6).
 - M0 is deliberately the profile-and-requirements gate (no Layer 2 primaries — its output, the capability profile, is what makes every CONDITIONAL mapping decidable). It is not a placeholder: without an M0 profile, conditional rules are NOT ASSESSABLE.

@@ -30,7 +30,7 @@ M2 PASS (domain model deployed).
 | CAP-SEC-018 | **HARD** | MCP | MCP exposure governance |
 | CAP-PERF-001 | SOFT | CONCURRENT-PAGING+ODATA | Reliable pagination |
 
-**Supporting:** CAP-ARCH-003 (service cut holds), CAP-CDS-007 (annotation placement), CAP-SEC-014 (limits sketched), CAP-ERR-001/-005 (error contract: stable codes, targets).
+**Supporting** (selected per review mode — see the review command; non-gating here): CAP-ARCH-003 (service cut holds), CAP-CDS-007 (annotation placement), CAP-SEC-014 (limits sketched), CAP-ERR-001 (error contract via CAP error APIs), CAP-SEC-013 (injection surface — only when CUSTOM-OPS ∧ (REMOTE ∨ MASHUP); PRIMARY/HARD at M4, findings here escalate as cross-cutting security observations).
 
 ## Required evidence
 `srv/**/*.cds` service definitions as tailored projections; authorization aspect file (`@requires`/`@restrict` per service — deliberate `@requires:'any'` documented); validation annotations on writable elements; protocol annotations (`@protocol:'none'` for internal; Java V2 stance); exposure-review notes for association paths (SEC-011); API documentation.

@@ -11,7 +11,7 @@ The binding rules are the [AI-REVIEW family](../standards/ai/ai-review-rules.md)
 | Request | Scope |
 |---|---|
 | Full standard review | All applicable Layer 2 categories |
-| Milestone gate review (e.g., "review milestone M6") | The milestone's PRIMARY + FINAL-GATE rules (plus touched SUPPORTING rules) per the [rule-milestone matrix](../development/rule-milestone-matrix.md) and the milestone's [checklist](../development/milestones/m0-requirements.md); gate result per [matrix §1.3](../development/rule-milestone-matrix.md#13-milestone-gate-results) |
+| Milestone gate review (e.g., "review milestone M6") | The milestone's PRIMARY + FINAL-GATE rules (plus SUPPORTING rules selected per review mode — DEVELOPMENT: rows whose subject the milestone's changes touch; RETROSPECTIVE: evidence-driven selection per the review command) per the [rule-milestone matrix](../development/rule-milestone-matrix.md) and the milestone's [checklist](../development/milestones/m0-requirements.md); gate result per [matrix §1.3](../development/rule-milestone-matrix.md#13-milestone-gate-results) |
 | Category review (e.g., "security review") | Named categories only — the report states the narrowed scope |
 | Re-review after remediation | Previously failed rules + anything touched by the remediation |
 

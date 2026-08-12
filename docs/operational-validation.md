@@ -16,6 +16,8 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | P6 | `milestone: M3` + `identity.service: undecided` | ✗ (required from M1) |
 | P7 | Profile says `eventing: false` but repo contains messaging config | CONTRADICTORY profile finding; review stops for profile correction |
 | P8 | Profile contains a `clientsecret`-like value | CAP-SEC-017 finding; profile-security constraint cited |
+| P9 | Workload flag `concurrent_paging: unknown` | Dependent rule (CAP-PERF-001) **NOT ASSESSABLE naming the flag** — never silently NOT APPLICABLE, never guessed |
+| P10 | Workload flag `concurrent_edit: false # source: owner-declared` while the repo shows shared draft-enabled entities writable by multiple roles | CONTRADICTORY profile finding; review stops for profile correction (declaration ≠ repository evidence) |
 
 ## F — Rule filtering
 
@@ -26,7 +28,9 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | F3 | `eventing: false`, M5 review | CAP-EVT-* NOT APPLICABLE (not findings); if also `remote_services: false` and `extensibility: false` → milestone NOT APPLICABLE |
 | F4 | `multitenant: true`, M6 review | CAP-MT-003/-004 included; MT FINAL-GATE items appear at M8/M9 |
 | F5 | Version-sensitive rule (e.g., CAP-SRV-005) in any review | Register (`docs/version-management.md`) consulted; its verified date checked before use; no hard-coded versions |
-| F6 | M3 review, worked-example profile | Exactly the 10-rule set of the worked example (15 − 5 filtered) |
+| F6 | M3 review, worked-example profile (DEVELOPMENT mode) | Exactly the 10-rule set of the worked example (15 − 5 filtered) |
+| F7 | RETROSPECTIVE M3 review (profile milestone later or `LIVE`) | SUPPORTING selection is evidence-driven, bounded to the checklist's supporting list; per-row selected/not-selected rationale with criterion (a)/(b)/(c) recorded in report §7; never all-by-default |
+| F8 | M3 review with `custom_operations: true` ∧ (`remote_services: true` ∨ `mashups: true`) | CAP-SEC-013 appears as M3 SUPPORTING (matrix footnote ³); non-gating at M3; a violation escalates as a cross-cutting security observation (R6) |
 
 ## G — Gate behavior
 
@@ -49,6 +53,7 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | E3 | Evidence CONTRADICTORY (config says X, code does Y) | FAIL with both citations |
 | E4 | Evidence genuinely unavailable (needs runtime/platform export) | NOT ASSESSABLE naming the exact evidence needed; never PASS |
 | E5 | Developer assertion only ("we checked it") | Not accepted as evidence unless the rule explicitly accepts a documented decision (e.g., CAP-SRV-008's recorded last-write-wins) |
+| E6 | Remote-backed entity with a delegation handler forwarding `req.query`; and a local entity whose handler discards `req.query` | CAP-SRV-002: delegation handler NOT flagged (documented integration pattern, detection step 3); the query-discarding handler still FAILs |
 
 ## C — CAPire verification
 
@@ -69,6 +74,9 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | R2 | Any completed review | Scope claim is precise ("applicable Mx standards evaluated in this review") — no blanket best-practice claims |
 | R3 | Re-review after remediation | Scope = previously FAILED/NOT-ASSESSABLE rules + touched files; resolution verified per rule detection, not inferred from file changes |
 | R4 | Review of any kind | Zero application-code modifications occurred (read-only check) |
+| R5 | Two rules FAIL on the same underlying defect (e.g., CAP-SEC-010 + CAP-SRV-003 on one bypassable ownership check) | ONE root-finding block in §3 with all affected rule IDs and each rule's evidence; per-rule verdicts retained in §8; defect counted once in §2's summary |
+| R6 | Strong evidence of a security issue owned by a later milestone's rule (e.g., injection at M3, CAP-SEC-013 owned by M4) | Cross-cutting security observation in §5.1 (owning rule + milestone, evidence, risk, remediation recommendation); current milestone NOT failed by the later rule; observation carried into subsequent reviews until the owning milestone evaluates it |
+| R7 | Review of a milestone behind the project's position / a `LIVE` project | Report header states review mode (DEVELOPMENT/RETROSPECTIVE); `LIVE` → report states findings are current operational risk, not historical |
 
 ## D — Development mode
 
@@ -79,4 +87,4 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | D3 | Failing test blocking a task | Test fixed or defect fixed — never deleted/weakened (AI-DEV-014) |
 | D4 | Completion | Report per template with self-validation table and evidence locations for review handoff |
 
-**Executions:** full 36-scenario execution record of 2026-08-12 (both fixtures, incl. the [Java fixture](../examples/worked-example-m3-java/README.md)): [validation-results-2026-08.md](validation-results-2026-08.md) — 36/36 PASS with one defect found-and-fixed (calibration item 1). Re-run after any change to the commands, profile spec, matrix, or CAPire protocol.
+**Executions:** full 36-scenario execution record of 2026-08-12 (both fixtures, incl. the [Java fixture](../examples/worked-example-m3-java/README.md)): [validation-results-2026-08.md](validation-results-2026-08.md) — 36/36 PASS with one defect found-and-fixed (calibration item 1). **Round 1 calibration (2026-08-12) added P9–P10, F7–F8, E6, R5–R7 (now 44 scenarios); the addendum in the same results document records their execution plus re-runs of the affected pre-existing scenarios.** Re-run after any change to the commands, profile spec, matrix, or CAPire protocol.

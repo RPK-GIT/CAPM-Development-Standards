@@ -55,7 +55,7 @@ database:
   production: ""         # REQUIRED from M1 — hana | postgres | undecided → CAP-DB-001
   legacy_hdbcds: false   # migrated on-prem-origin artifacts   → CAP-VER-006
 
-workload:                # OPTIONAL — default false; reviewers spot-check plausibility (see Validation)
+workload:                # OPTIONAL — values true | false | unknown; see "Workload flag evidence states"
   mass_data: false       #                                    → CAP-PERF-005
   concurrent_edit: false #                                    → CAP-SRV-008
   concurrent_paging: false #                                  → CAP-PERF-001
@@ -64,6 +64,21 @@ workload:                # OPTIONAL — default false; reviewers spot-check plau
   cloud_only_features: false # locking/MTX/HANA-specific       → CAP-TEST-006
   major_upgrade_in_scope: false #                              → CAP-VER-005
 ```
+
+## Workload flag evidence states *(added 2026-08-12, Round 1 calibration — Pilot 1, ambiguity A-1)*
+
+Workload characteristics are usually **not derivable from a repository** (e.g., whether collections are paged while concurrently modified). To keep dependent rules honest, each `workload` flag carries one of three values plus an optional source note:
+
+| Value | Meaning | Effect on dependent rules |
+|---|---|---|
+| `true` / `false` | Decided. An inline `# source:` comment records the basis: `# source: owner-declared (<who/role>, <date>)` or `# source: repo-evidence (<pointer>)` | Normal CONDITIONAL filtering |
+| `unknown` | Nobody has established the characteristic yet | Rules conditioned on the flag are **NOT ASSESSABLE**, naming the flag — never silently filtered to NOT APPLICABLE, never guessed |
+
+Evidence discipline:
+
+- **Owner declaration is a hypothesis, not repository evidence.** Reviewers cross-check every `owner-declared` flag against the repository (Validation step 4); where the repository contradicts the declaration (e.g., `concurrent_edit: false` but shared draft-enabled entities are writable by multiple roles), the review reports **CONTRADICTORY profile evidence** and stops — the profile must be corrected, not overridden.
+- Repository evidence MAY confirm a declaration (upgrade the source note to `repo-evidence`), and MAY establish a flag on its own where the artifact is unambiguous.
+- **Claude never sets or assumes a workload value by inference.** It MAY propose a value with the supporting evidence; the value enters the profile only by user acceptance (same rule as Validation step 2). Where no owner input and no unambiguous repository evidence exist, the correct value is `unknown`.
 
 ## Repository-derived conditions (deliberately NOT in the profile)
 
@@ -77,8 +92,19 @@ Two matrix conditions are determined by repository inspection, not declaration, 
 | **Required from M1** | `identity.service`, `deployment.target`, `database.production` (`undecided` is a legal value *only before* M1 exit — see [M1 checklist](milestones/m1-architecture.md)) |
 | **Conditionally required** | `tenancy.sidecar` when `multitenant: true` |
 | **Optional (safe default false)** | the `workload` block, `cap.odata` (default true), `identity.new_project`, `deployment.multi_landscape`, `database.legacy_hdbcds` |
-| **Allowed values** | `runtime`: `nodejs`\|`java` · `milestone`: `M0`–`M9`\|`LIVE` · `identity.service`: `ias`\|`xsuaa`\|`undecided` · `deployment.target`: `cloud-foundry`\|`kyma`\|`both`\|`undecided` · `database.production`: `hana`\|`postgres`\|`undecided` · booleans strictly `true`/`false` |
+| **Allowed values** | `runtime`: `nodejs`\|`java` · `milestone`: `M0`–`M9`\|`LIVE` · `identity.service`: `ias`\|`xsuaa`\|`undecided` · `deployment.target`: `cloud-foundry`\|`kyma`\|`both`\|`undecided` · `database.production`: `hana`\|`postgres`\|`undecided` · booleans strictly `true`/`false` (exception: `workload` flags allow `true`\|`false`\|`unknown` — see Workload flag evidence states) |
 | **Version format** | `cap.version` = the major line as a string (matched against the [version register](../docs/version-management.md), never against hard-coded numbers) |
+
+## Review modes (milestone position vs reviewed milestone) *(added 2026-08-12, Round 1 calibration)*
+
+The reviewed milestone and `project.milestone` together determine the **review mode**, recorded in every report header:
+
+| Mode | When | Meaning for findings |
+|---|---|---|
+| **DEVELOPMENT** | Reviewed milestone = the milestone currently being developed (`project.milestone` equals it, application not yet complete) | Findings block forward progress; SUPPORTING selection = rows whose subject the milestone's changes touch |
+| **RETROSPECTIVE** | Reviewed milestone lies behind the project's actual position (`project.milestone` later, or `LIVE`) | Findings assess decisions already made; SUPPORTING selection is evidence-driven (see the review command) |
+
+`project.milestone: LIVE` additionally means the application is **deployed**: the report MUST state that findings represent **current operational risk**, not historical/pre-release risk. No other process changes — the same rules, gates, and evidence model apply in both modes.
 
 ## Invalid / flagged combinations
 
@@ -92,7 +118,8 @@ Validation fails (✗) or warns (⚠) on:
 - ⚠ `capabilities.mcp: true` + `cap.runtime: java` — the Java MCP adapter is not publicly released per the version register; verify before relying on it.
 - ⚠ `capabilities.broker: true` + `capabilities.eventing: false` — a broker without eventing is usually a profile error.
 - ⚠ `capabilities.feature_toggles: true` + `tenancy.multitenant: false` — per-tenant toggling implies MT; verify intent.
-- ⚠ `workload` flags all false on a non-trivial project — reviewers spot-check plausibility (e.g., transactional entities usually imply `concurrent_edit`).
+- ⚠ `workload` flags all false on a non-trivial project — reviewers spot-check plausibility (e.g., transactional entities usually imply `concurrent_edit`); where a characteristic genuinely cannot be established, the honest value is `unknown`, not `false`.
+- ⚠ any `workload` flag `unknown` at M4+ — the dependent rules stay NOT ASSESSABLE until the flag is decided; the review names them.
 
 ## Validation procedure (executed by both commands before any rule work)
 

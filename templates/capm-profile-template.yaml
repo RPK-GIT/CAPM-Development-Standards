@@ -49,7 +49,9 @@ database:
   production: undecided  # hana | postgres | undecided (decided by M1 exit)
   legacy_hdbcds: false
 
-workload:                # optional block — defaults false; reviewers spot-check plausibility
+workload:                # optional block — values: true | false | unknown (see project-profile.md "Workload flag evidence states")
+                         # decided values carry a source note:  # source: owner-declared (<who>, <date>)  or  # source: repo-evidence (<pointer>)
+                         # 'unknown' → dependent rules are NOT ASSESSABLE (never silently filtered); never guess a value
   mass_data: false
   concurrent_edit: false
   concurrent_paging: false

@@ -826,13 +826,13 @@ None for the value rules. Input-dependent structure is itself the exception path
 | **Authority** | SAP-REQ (SAP names these developer responsibilities; concrete values are ORG — gaps G-07/G-08) |
 | **Applicability** | All projects serving OData/HTTP APIs in production |
 | **Runtime** | Both (mechanisms differ — see statement) |
-| **CAP version** | Java property names per current CAP Java docs; Node.js `$expand` limiting has no framework switch (custom handler required) |
+| **CAP version** | Property names per current docs (Node.js `$batch` limit `cds.odata.batch_limit` documented — mechanism list updated 2026-08-12, Phase 4 Pilot 1 governance note); Node.js `$expand` limiting has no framework switch (custom handler required) |
 | **Status** | Active |
 | **Related rules** | CAP-SEC-012, CAP-SEC-018; CAP-PERF-001 (reliable paging) complements the limit decisions owned here |
-| **Last verified** | 2026-08-11 |
+| **Last verified** | 2026-08-12 |
 
 ### Rule statement
-Projects MUST make deliberate, recorded decisions for the documented request-amplification controls: `$batch` size (Java: `cds.odataV4.batch.maxRequests`), `$expand` depth (Java: `cds.query.restrictions.expand.maxLevels`; Node.js: a custom handler per SAP), and pagination limits (`@cds.query.limit`, keeping the framework default cap). A rate-limiting strategy MUST exist (application- or platform-level); its concrete thresholds are ORG policy (G-07), and the Node.js `$expand` handler pattern is ORG-defined (G-08).
+Projects MUST make deliberate, recorded decisions for the documented request-amplification controls: `$batch` size (Java: `cds.odataV4.batch.maxRequests` / `cds.odataV2.batch.maxRequests`; Node.js: `cds.odata.batch_limit`), `$expand` depth (Java: `cds.query.restrictions.expand.maxLevels`; Node.js: a custom handler per SAP), and pagination limits (`@cds.query.limit`, keeping the framework default cap). A rate-limiting strategy MUST exist (application- or platform-level); its concrete thresholds are ORG policy (G-07), and the Node.js `$expand` handler pattern is ORG-defined (G-08).
 
 ### Rationale
 SAP's data-protection guide assigns these to the application: batch limits, expand limits ("CAP applications have to limit the amount of $expands per request in a custom handler" for Node.js), and "Applications need to establish an adequate rate limiting strategy." Unbounded batch/expand turns one request into thousands of operations. **Medium:** availability/resource impact, not confidentiality or integrity.
@@ -842,7 +842,7 @@ Java: the two properties set in `application.yaml`. Node.js: an expand-guard in 
 
 ### Detection guidance
 1. Java: check `application*.yaml` for `cds.odataV4.batch.maxRequests` and `cds.query.restrictions.expand.maxLevels`; absent → FAIL (undecided), present → record values.
-2. Node.js: search `srv/` for a `$expand`-depth/count guard in `before` handlers; check docs for the platform-level alternative; neither → FAIL.
+2. Node.js: check `cds.odata.batch_limit` in the cds configuration (absent → batch limit undecided); search `srv/` for a `$expand`-depth/count guard in `before` handlers; check docs for the platform-level alternative; no expand decision → FAIL.
 3. Check pagination: `@cds.query.limit` settings or confirmation the default cap is intentionally kept (no `limit: 0` disabling).
 4. Look for the rate-limiting decision (mta route-service binding, gateway config, middleware, or ADR); none → FAIL (undecided).
 5. Report as "undecided" vs "decided with values" — this rule enforces the decision, not specific numbers.
@@ -853,6 +853,11 @@ Java: the two properties set in `application.yaml`. Node.js: an expand-guard in 
 cds:
   odataV4.batch.maxRequests: 100
   query.restrictions.expand.maxLevels: 3
+```
+
+```jsonc
+// package.json (Node.js) — batch limit configured; expand guard in a before handler per SAP
+{ "cds": { "odata": { "batch_limit": 100 } } }
 ```
 
 ### Bad example
