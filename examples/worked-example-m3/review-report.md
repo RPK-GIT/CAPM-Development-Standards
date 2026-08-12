@@ -21,10 +21,10 @@ From [`capm-profile.yaml`](capm-profile.yaml), validated OK (no ✗ combinations
 
 | Category | PASS | FAIL | NOT APPLICABLE | NOT ASSESSABLE |
 |---|---|---|---|---|
-| CAP-SRV | 5 | 1 | 3 | 1 |
+| CAP-SRV | 4 | 2 | 3 | 1 |
 | CAP-SEC | 2 | 1 | 2 | 0 |
 | CAP-PERF | 0 | 0 | 1 | 0 |
-| **Total (of M3 set)** | **7** | **2** | **6** | **1** |
+| **Total (of M3 set)** | **6** | **3** | **6** | **1** |
 
 **Gate recommendation: FAIL** — one uncovered HARD-GATE violation (CAP-SEC-001); no exception record exists.
 
@@ -42,6 +42,13 @@ From [`capm-profile.yaml`](capm-profile.yaml), validated OK (no ✗ combinations
 - **Evidence:** `srv/internal-recalc.cds` L3 — internal helper service without `@protocol: 'none'`.
 - **Impact:** internal orchestration service served on the default OData endpoint.
 - **Remediation:** §11 item 2. *Soft gate: milestone may proceed only with recorded justification — none recorded.*
+
+### CAP-SRV-001 — Expose use-case projections, not persistence entities — FAIL — High *(SOFT-GATE)*
+- **Authority:** SAP-REC
+- **Evidence:** `srv/orders-service.cds` L4 — `Orders` re-exposed 1:1 including the internal costing field `internalMargin` (db/schema.cds L8) and `buyerEmail`; no exclusion or column selection (rule detection steps 3–4).
+- **Impact:** the API contract couples to the persistence model and leaks an internal field to every service consumer.
+- **Remediation:** §11 item 1 covers it (the restriction fix excludes `internalMargin`).
+- *Validation note: this finding was initially missed and added during the Phase 3 validation execution — see the [validation results](../../docs/validation-results-2026-08.md), calibration item 1.*
 
 ## 4. Recommendations & observations (non-defects)
 - `AI-REC`: `buyerEmail` is exposed nowhere after the CatalogService exclusion — consider whether OrdersService (once restricted) needs it either (data-minimization, feeds CAP-PRIV review at M6).
@@ -64,7 +71,7 @@ CAP-SRV-007 (DRAFTS=false), CAP-SRV-009 (MEDIA=false), CAP-SEC-018 (MCP=false), 
 
 | Rule | Verdict | Evidence pointer |
 |---|---|---|
-| CAP-SRV-001 | PASS | `srv/catalog-service.cds` L6 — tailored projection excluding internal fields |
+| CAP-SRV-001 | **FAIL** | `orders-service.cds` L4 — 1:1 re-exposure incl. `internalMargin` (CatalogService itself is compliant: `catalog-service.cds` L6) |
 | CAP-SRV-002 | PASS | no custom handlers reimplementing generic behavior (none exist yet) |
 | CAP-SRV-003 | PASS | validation declared in `srv/annotations.cds` L4–L5 |
 | CAP-SRV-004 | PASS | `reorder` modeled as action (`catalog-service.cds` L7) |

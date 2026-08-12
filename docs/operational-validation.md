@@ -79,4 +79,4 @@ Each scenario: **Given** (input/fixture) → **Expect** (required outcome). A sc
 | D3 | Failing test blocking a task | Test fixed or defect fixed — never deleted/weakened (AI-DEV-014) |
 | D4 | Completion | Report per template with self-validation table and evidence locations for review handoff |
 
-**Reference execution:** the [worked example](../examples/worked-example-m3/review-report.md) instantiates P1, F5, F6, G1, G3, E1, E2, E4/E5 (SRV-008), C1, C6, R1, R2.
+**Executions:** full 36-scenario execution record of 2026-08-12 (both fixtures, incl. the [Java fixture](../examples/worked-example-m3-java/README.md)): [validation-results-2026-08.md](validation-results-2026-08.md) — 36/36 PASS with one defect found-and-fixed (calibration item 1). Re-run after any change to the commands, profile spec, matrix, or CAPire protocol.
