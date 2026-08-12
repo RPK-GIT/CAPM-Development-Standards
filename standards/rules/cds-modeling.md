@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 11 active (0 Critical, 1 High, 8 Medium, 2 Low). All SAP references verified against official CAP documentation on **2026-08-11**.
 
-Scope boundaries: what services *expose* of the model is [CAP-SRV-001](services-apis.md); performance-motivated modeling (calculated fields in filters, key shape for JOINs) belongs to the future `CAP-PERF` category; `@PersonalData` modeling to the future `CAP-PRIV` category.
+Scope boundaries: what services *expose* of the model is [CAP-SRV-001](services-apis.md); performance-motivated modeling (calculated fields in filters) is [CAP-PERF](performance.md); `@PersonalData` modeling is [CAP-PRIV-001](data-privacy.md).
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -91,7 +91,7 @@ Imported/external models and models mirroring an existing API contract keep thei
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-CDS-003, CAP-CDS-004; key shape vs JOIN performance → future CAP-PERF |
+| **Related rules** | CAP-CDS-003, CAP-CDS-004; the JOIN-performance rationale for single-field keys is absorbed here (candidate CAP-PERF #8) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -359,7 +359,7 @@ entity OrderItems : cuid { order : Association to Orders; /* … */ }
 ```
 
 ### Exception guidance
-Legacy schemas where children are physically shared tables may keep associations with explicitly hand-implemented lifecycle handling — documented at the model (ADR per CAP-ARCH-007). Separating rarely-used or very large sub-structures into associated entities for performance is legitimate when recorded (future CAP-PERF cross-ref).
+Legacy schemas where children are physically shared tables may keep associations with explicitly hand-implemented lifecycle handling — documented at the model (ADR per CAP-ARCH-007). Separating rarely-used or very large sub-structures into associated entities for performance is legitimate when recorded (CAP-PERF-006).
 
 ### SAP reference
 - https://cap.cloud.sap/docs/cds/cdl ("Using compositions of one for entities is discouraged"; managed compositions of aspects for contained-in document structures)

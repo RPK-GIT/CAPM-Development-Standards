@@ -364,3 +364,77 @@ Batch severity: **0 Critical / 5 High / 12 Medium / 1 Low** (High: CAP-TEST-007,
 - **Log retention, audit-vs-application log policy** — ORG gaps G-03/G-06 unchanged; the audit-logging *mechanism* stays with the future CAP-PRIV batch.
 - **Monitoring/alerting mandates, SLAs, probe intervals** — gap G-37; CAP-LOG-004 governs mechanism-when-adopted only.
 - **Health-check wiring** — CAP-OPS/CAP-DEP candidate territory (deployment descriptors), untouched here.
+
+---
+
+## Batch 6 — Performance, Extensibility & Privacy (2026-08-12)
+
+Verification basis: one targeted verification pass (performance-modeling and served-ootb pages; extensibility pages; all five privacy pages with explicit reachability checks) on 2026-08-12. Corrections marked ⚠. Final rules: [performance.md](../standards/rules/performance.md) (7), [extensibility.md](../standards/rules/extensibility.md) (4), [data-privacy.md](../standards/rules/data-privacy.md) (4).
+
+### Performance candidates (8 in inventory; #6 relocated in Batch 3)
+
+| Candidate (candidate-rules.md §CAP-PERF) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Intentional pagination limits | MERGED | → CAP-SEC-014 | The deliberate-limit decision (incl. keeping the default cap, never `limit: 0`) is already normative there since Batch 1 — not re-authored |
+| #2 Reliable pagination (OData V4) | ACCEPTED | CAP-PERF-001 | All documented limitations verified verbatim, incl. the sensitive-data skip-token warning |
+| #3 Associations + `$expand` over JOIN views | DOWNGRADED | CAP-PERF-002 | High → **Medium** (chronic cost, not explosion); "A JOIN will not be executed until you explicitly use `$expand`" + detail-first pattern verified |
+| #4 No live-calculated fields in filter/sort | ACCEPTED | CAP-PERF-003 | **High kept** with justification (full-table scans on the normal request path at scale — the named resource-exhaustion case); preference order and `@Capabilities` guidance verified verbatim |
+| #5 Avoid UNIONs; remodel polymorphism | ACCEPTED | CAP-PERF-004 | Both documented remodeling options verified (discriminator+compositions; sparse aspect table) |
+| #6 Decimal/Int64 arithmetic in DB | (Batch 3) MERGED | → CAP-DB-009 | Historical |
+| #7 `srv.foreach` for large result sets | ACCEPTED | CAP-PERF-005 | Exact wording verified ("instead of materializing the full result set in memory") |
+| #8 Single-field primary keys | MERGED | → CAP-CDS-002 | The JOIN-performance rationale is absorbed into the key rule's scope (related-rules line updated); a standalone Low rule would duplicate the cuid preference |
+| #9 Composition-tree size awareness | ACCEPTED | CAP-PERF-006 | "Copied entirely into draft state, even when only one little part is changed" verified verbatim |
+| — (gap G-05: N+1 in handlers) | NEW RULE | CAP-PERF-007 | **High, GEN authority** — SAP documents the set-based primitives, not the prohibition; authored as the resolution of gap G-05 with honest authority labeling. Remote fan-out variant remains CAP-INT-005 |
+
+### Extensibility candidates (3 reviewed, 1 new rule)
+
+| Candidate (§CAP-EXT) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Extension allowlist as deliberate artifact | ACCEPTED | CAP-EXT-002 | High kept (base-model integrity for all tenants); `x_` prefix requirement and `cds build`-validation-aborts-`cds push` verified verbatim; limit values stay ORG (G-35) |
+| #2 Extension workflow | ACCEPTED | CAP-EXT-003 | `cds login`/`pull`/`push`, test-tenant-first, and `cds.ExtensionDeveloper` role verified |
+| #3 Feature-toggle constraints | DOWNGRADED | CAP-EXT-004 | High → **Medium** (violations fail loudly at build/first toggle-combination test); all three limitations verified in the docs' warning box; ⚠ production-provider asymmetry embedded (Java Feature Toggles Info Provider required; Node.js has "no out-of-the-box feature toggles provider for production yet") |
+| — (batch scope: extend-vs-modify anchor) | NEW RULE | CAP-EXT-001 | ⚠ Citation corrected: intrinsic-extensibility statements live on **get-started/concepts** (`/docs/about/best-practices` is 404); upgrade-safety anchor: no in-place modification of reuse/base/generated artifacts |
+
+### Privacy candidates (4 reviewed + deferred CAP-SEC #17)
+
+| Candidate | Disposition | Final rule | Notes |
+|---|---|---|---|
+| **CAP-SEC #17 (deferred from Batch 1)** | **MERGED** | → CAP-PRIV-001 | Resolved as planned: the `@PersonalData` annotation duty is owned by Privacy; Security cross-references (SEC-016's audit-log pointer now resolves here). Not recreated as a Security rule |
+| CAP-PRIV #1 Complete `@PersonalData` semantics | ACCEPTED WITH MODIFICATION | CAP-PRIV-001 | Absorbs #2 and SEC #17. ⚠ Two wording corrections: DataSubjectID strength is "needs to identify" (REQ substance, no "must" quote); the "apply IsPotentiallySensitive selectively" advice is **not SAP wording** — reframed as our operational rationale (every read audited), explicitly labeled |
+| CAP-PRIV #2 Annotations in dedicated file | MERGED | → CAP-PRIV-001 | "Following the best practice of separation of concerns… srv/data-privacy.cds" verified — folded as the documented pattern |
+| CAP-PRIV #3 Audit logging plugin + service | ACCEPTED | CAP-PRIV-002 | Automatic logging of personal-data changes/sensitive reads, old/new values, outbox-by-default, and production `audit-log-to-restv2` verified; ⚠ Java specifics are a documented **pointer** to `/docs/java/auditlog` — rule instructs verifying there rather than asserting details |
+| CAP-PRIV #4 PDM flat + role-protected | ACCEPTED | CAP-PRIV-003 | High kept (concentrated personal-data surface); flat-structures need, `PersonalDataManagerUser` grant to the PDM instance, and enterprise-account constraint verified verbatim |
+| — (batch scope: retention/erasure) | NEW RULE | CAP-PRIV-004 | **GEN authority, no SAP mandate claimed:** ⚠ the DRM guide is explicitly "Under construction" with all substantive content unrendered (HTML comments) — verified 2026-08-12; no reachable statement requires DRM integration. The rule mandates a *documented approach* (inventory-mapped erasure incl. drafts/outbox/managed fields), periods stay ORG/legal (G-16), mechanism state in-flux (G-17) |
+
+### Batch summary
+
+| Metric | Performance | Extensibility | Privacy |
+|---|---|---|---|
+| Candidates reviewed | 8 (7 newly dispositioned) | 3 | 4 (+ deferred SEC #17) |
+| Accepted unchanged | 4 | 2 | 2 |
+| Accepted with modification | 0 | 0 | 1 |
+| Merged | 2 (#1 → SEC-014; #8 → CDS-002) | 0 | 2 (#2; SEC #17) |
+| Downgraded | 1 | 1 | 0 |
+| Rejected | 0 | 0 | 0 |
+| Deferred | 0 | 0 | 0 |
+| New rules | 1 (CAP-PERF-007, GEN, from G-05) | 1 (CAP-EXT-001) | 1 (CAP-PRIV-004, GEN) |
+| **Final rules** | **7** | **4** | **4** |
+
+Batch severity: **0 Critical / 6 High / 9 Medium / 0 Low** (High: PERF-003/-007, EXT-002, PRIV-001/-002/-003). Authority: 3 SAP-REQ (EXT-002, EXT-004, PRIV-003), 10 SAP-REC, 2 GEN (PERF-007, PRIV-004 — the catalog's first GEN rules, both with explicitly documented non-SAP origins). Runtime: 1 Node.js-only (PERF-005), 14 Both.
+
+### Verification corrections applied (summary)
+
+1. Intrinsic-extensibility citation moved to get-started/concepts (`/docs/about/best-practices` 404) — CAP-EXT-001.
+2. DataSubjectID strength: "needs to identify", not "must" — CAP-PRIV-001.
+3. "Selective sensitive-tagging" is not SAP wording — reframed as labeled rationale — CAP-PRIV-001.
+4. DRM guide under construction, content unrendered — CAP-PRIV-004 authored as GEN with zero SAP authority claimed.
+5. Java audit-logging details are a pointer to `/docs/java/auditlog` — CAP-PRIV-002 instructs per-runtime verification.
+6. Node.js production feature-toggle provider does not exist out of the box — embedded in CAP-EXT-004.
+
+### Scope items reviewed with no rule created (Batch 6)
+
+- **Performance budgets, SLOs, sizing, caching mandates** — SAP prescribes none; gap G-04 stays open (M0 NFR material). CAP documents no general application-cache mechanism to mandate — no caching rule invented.
+- **Database index guidance** — no CAP-level index rules found beyond the calculated-fields/index interaction (embedded in PERF-003); native index design is database documentation, not CAP.
+- **In-app vs side-by-side extension strategy selection** — the four documented categories are described, not prescribed per situation; strategy choice is architecture (ADR per CAP-ARCH-007).
+- **Data masking** — no CAP-documented general masking mechanism beyond log-header masking (CAP-SEC-016) and the audit mechanisms; nothing to formalize.
+- **Retention periods / legal grounds** — G-16 unchanged (legal, not engineering).

@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 5 active (0 Critical, 1 High, 4 Medium). All SAP references verified against official CAP documentation on **2026-08-12**.
 
-Scope boundaries: **sensitive-data hygiene in logs is [CAP-SEC-016](security.md)** (secrets/PII, masking, injection, production levels) — not restated here. **Application logs are not audit logs:** audit logging of personal-data access is the future `CAP-PRIV` category (`@cap-js/audit-logging` / SAP Audit Log service, see the [source map](../../references/sap-cap-sources.md) §6); CAP documents **no** automatic authorization-decision logging (ORG gap G-06); retention policy is ORG (G-03). Health-check wiring and monitoring/alerting mandates belong to the future `CAP-OPS`/`CAP-DEP` categories (G-37) — no monitoring SLAs are invented here.
+Scope boundaries: **sensitive-data hygiene in logs is [CAP-SEC-016](security.md)** (secrets/PII, masking, injection, production levels) — not restated here. **Application logs are not audit logs:** audit logging of personal-data access is [CAP-PRIV-002](data-privacy.md) (`@cap-js/audit-logging` / SAP Audit Log service, see the [source map](../../references/sap-cap-sources.md) §6); CAP documents **no** automatic authorization-decision logging (ORG gap G-06); retention policy is ORG (G-03). Health-check wiring and monitoring/alerting mandates belong to the future `CAP-OPS`/`CAP-DEP` categories (G-37) — no monitoring SLAs are invented here.
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|

@@ -828,7 +828,7 @@ None for the value rules. Input-dependent structure is itself the exception path
 | **Runtime** | Both (mechanisms differ — see statement) |
 | **CAP version** | Java property names per current CAP Java docs; Node.js `$expand` limiting has no framework switch (custom handler required) |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-012, CAP-SEC-018; future CAP-PERF pagination rule will cross-reference |
+| **Related rules** | CAP-SEC-012, CAP-SEC-018; CAP-PERF-001 (reliable paging) complements the limit decisions owned here |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -970,7 +970,7 @@ console.log(`login for ${req.data.user}: token=${req.headers.authorization}`);
 ```
 
 ### Exception guidance
-Diagnostic logging of business identifiers is fine. Temporarily elevated log levels for incident analysis are acceptable when time-bound and reverted — not committed as defaults. Audit-relevant personal-data access belongs in the audit log (CAP-PRIV rules, future batch), not application logs.
+Diagnostic logging of business identifiers is fine. Temporarily elevated log levels for incident analysis are acceptable when time-bound and reverted — not committed as defaults. Audit-relevant personal-data access belongs in the audit log (CAP-PRIV-002), not application logs.
 
 ### SAP reference
 - https://cap.cloud.sap/docs/guides/security/data-protection (log injection; escaping in Java; CRLF-safe Node API; INFO default)

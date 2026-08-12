@@ -74,7 +74,7 @@ END
 ```
 
 ### Exception guidance
-Documented performance-motivated database logic (mass calculations pushed down per future CAP-PERF guidance, HANA procedures via CAP-DB-004's native-SQL exception) is legitimate when the *rule of record* stays visible (ADR per CAP-ARCH-007) and handlers remain the trigger point. UI duplication *in addition to* server-side enforcement is fine.
+Documented performance-motivated database logic (mass calculations pushed down per CAP-PERF-003's on-write preference, HANA procedures via CAP-DB-004's native-SQL exception) is legitimate when the *rule of record* stays visible (ADR per CAP-ARCH-007) and handlers remain the trigger point. UI duplication *in addition to* server-side enforcement is fine.
 
 ### SAP reference
 - https://cap.cloud.sap/docs/guides/services/custom-code (event handlers as the custom-logic mechanism)

@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 9 active (0 Critical, 3 High, 6 Medium). All SAP references verified against official CAP documentation on **2026-08-11**.
 
-Scope boundaries: input-validation annotations are governed by [CAP-SEC-012](security.md#cap-sec-012--validate-externally-writable-input-declaratively); service authorization by [CAP-SEC-001](security.md#cap-sec-001--model-authorization-explicitly-for-every-exposed-service); pagination limit values by CAP-SEC-014 and the future CAP-PERF category; handler mechanics by [CAP-LOGIC](business-logic.md).
+Scope boundaries: input-validation annotations are governed by [CAP-SEC-012](security.md#cap-sec-012--validate-externally-writable-input-declaratively); service authorization by [CAP-SEC-001](security.md#cap-sec-001--model-authorization-explicitly-for-every-exposed-service); pagination limit values by CAP-SEC-014 (reliable paging: CAP-PERF-001); handler mechanics by [CAP-LOGIC](business-logic.md).
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -533,7 +533,7 @@ Last-write-wins is acceptable for low-stakes, high-churn data when recorded as a
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions. Dev-parity caveat (documented): SQLite doesn't support streaming — LargeBinary is read whole into memory |
 | **Status** | Active |
-| **Related rules** | CAP-SRV-002; future CAP-PERF (memory behavior) and CAP-SEC-018/G-11 (upload scanning, ORG) |
+| **Related rules** | CAP-SRV-002; CAP-PERF-005 (memory behavior) and CAP-SEC-018/G-11 (upload scanning, ORG) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

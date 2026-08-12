@@ -2,7 +2,7 @@
 
 The formal rule catalog describing what a production-grade CAP application looks like. Every rule follows [templates/rule-template.md](../../templates/rule-template.md) and carries a stable ID, severity, [authority level](../../docs/authority-levels.md), runtime applicability, and CAP version applicability.
 
-> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9), `CAP-DB` (10), `CAP-TXN` (6), `CAP-EVT` (7), `CAP-LOGIC` (5), `CAP-INT` (7), `CAP-TEST` (7), `CAP-ERR` (6), `CAP-LOG` (5) — 104 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
+> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9), `CAP-DB` (10), `CAP-TXN` (6), `CAP-EVT` (7), `CAP-LOGIC` (5), `CAP-INT` (7), `CAP-TEST` (7), `CAP-ERR` (6), `CAP-LOG` (5), `CAP-PERF` (7), `CAP-EXT` (4), `CAP-PRIV` (4) — 119 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
 
 ## Categories
 
@@ -17,13 +17,13 @@ The formal rule catalog describing what a production-grade CAP application looks
 | `CAP-INT` | Integration & remote services — **7 rules active** | [integration.md](integration.md) | Consuming services guide |
 | `CAP-EVT` | Events & messaging — **7 rules active** | [events-messaging.md](events-messaging.md) | Messaging guide |
 | `CAP-MT` | Multitenancy — **6 rules active** | [multitenancy.md](multitenancy.md) | Multitenancy/MTX guide |
-| `CAP-EXT` | Extensibility | [extensibility.md](extensibility.md) | Extensibility guide |
+| `CAP-EXT` | Extensibility — **4 rules active** | [extensibility.md](extensibility.md) | Extensibility guide |
 | `CAP-SEC` | Security — **18 rules active** | [security.md](security.md) | Security/authorization/authentication guides |
-| `CAP-PRIV` | Data privacy & audit | [data-privacy.md](data-privacy.md) | Data privacy guide |
+| `CAP-PRIV` | Data privacy & audit — **4 rules active** | [data-privacy.md](data-privacy.md) | Data privacy guide |
 | `CAP-ERR` | Error handling — **6 rules active** | [error-handling.md](error-handling.md) | Runtime error-handling docs |
 | `CAP-LOG` | Logging & observability — **5 rules active** | [logging-observability.md](logging-observability.md) | `cds.log`, telemetry docs |
 | `CAP-TEST` | Testing — **7 rules active** | [testing.md](testing.md) | `cds.test`, CAP Java testing docs |
-| `CAP-PERF` | Performance & scalability | [performance.md](performance.md) | Performance-relevant guides |
+| `CAP-PERF` | Performance & scalability — **7 rules active** | [performance.md](performance.md) | Performance-relevant guides |
 | `CAP-DEP` | Deployment (CF, Kyma/K8s) | [deployment.md](deployment.md) | Deployment guides |
 | `CAP-CICD` | CI/CD | [cicd.md](cicd.md) | CI/CD guide |
 | `CAP-VER` | Dependency & version management | [versions-dependencies.md](versions-dependencies.md) | Release schedule, version docs |
