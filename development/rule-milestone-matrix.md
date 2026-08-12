@@ -120,8 +120,6 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-SEC-002 | C | REQ | B | **H** | — | M6 | — | M8, M9 |
 | CAP-SEC-003 | C | REQ | N | **H** | — | M6 | — | M8 |
 | CAP-SEC-004 | H | REC | J | **H**² | — | M6 | — | M8 |
-³ | M6 |
-⁴ | — |
 | CAP-SEC-005 | C | REQ | J | **H** | — | M6 | — | M8 |
 | CAP-SEC-006 | M | REC | B | S | NEW-PROJECT | M1 | — | — |
 | CAP-SEC-007 | H | REQ | B | **H** | IAS | M6 | M3 | — |
@@ -130,7 +128,8 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-SEC-010 | H | REC | B | S | INSTANCE-AUTH | M3 | M4 | M6 |
 | CAP-SEC-011 | H | REQ | B | **H** | — | M3 | — | M6 |
 | CAP-SEC-012 | H | REC | B | S | — | M3 | M4 | M6 |
-| CAP-SEC-013 | C | REQ | B | **H** | — | M4 | M3| CAP-SEC-014 | M | REQ | B | S | — | M6 | M3 | — |
+| CAP-SEC-013 | C | REQ | B | **H** | — | M4 | M3³ | M6 |
+| CAP-SEC-014 | M | REQ | B | S | — | M6 | M3 | — |
 | CAP-SEC-015 | C | REQ | B | **H** | — | M6 | — | M8, M9 |
 | CAP-SEC-016 | M | REC | B | S | — | M4 | — | M6 |
 | CAP-SEC-017 | H | REC | B | **H**² | — | M6 | M5 | M8 |
@@ -152,7 +151,8 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 | CAP-ERR-002 | H | REQ | N | **H** | — | M4 | — | M6 |
 | CAP-ERR-003 | H | REC | B | S | — | M4 | — | — |
 | CAP-ERR-004 | M | REQ | N | S | ERROR-HOOKS | M4 | — | — |
-| CAP-ERR-005 | M | REC | B | S | UI | M4 | —| CAP-ERR-006 | H | REQ | B | **H** | — | M4 | — | M6 |
+| CAP-ERR-005 | M | REC | B | S | UI | M4 | —⁴ | — |
+| CAP-ERR-006 | H | REQ | B | **H** | — | M4 | — | M6 |
 | CAP-LOG-001 | M | REC | B | S | — | M4 | — | — |
 | CAP-LOG-002 | M | REC | B | S | — | M8 | — | M9 |
 | CAP-LOG-003 | M | REC | B | S | — | M9 | M5 | — |
@@ -193,10 +193,9 @@ Legend: **Gate** H = HARD, S = SOFT, A = ADVISORY. **RT** B/N/J. **Cond** = capa
 
 **Footnoted classifications (deviations from a naive severity/authority mapping):**
 ¹ CAP-TXN-005 and CAP-VER-001 are SAP-REQ-worded but SOFT: TXN-005's own statement provides a documented-acceptance path for partial-failure risk; VER-001's failure mode is reproducibility drift with a routine remediation (regenerate lockfile) — blocking is disproportionate.
+² HARD despite SAP-REC authority: CAP-SEC-004 (weakened authentication surface), CAP-SEC-017 (secrets exposure — a named critical candidate), CAP-SEC-018 (ungoverned MCP exposure incl. the documented SAP-API prohibition), CAP-LOG-005 (public actuators = credential-grade disclosure), CAP-TEST-007 (mandatory testing of critical security behavior — named hard-gate candidate), CAP-PRIV-001 (unclassified personal data disables every downstream protection). Gate class follows consequence, not wording strength.
 ³ CAP-SEC-013's M3 SUPPORTING appearance is conditional on `CUSTOM-OPS ∧ (REMOTE ∨ MASHUP)` (custom operations exist and remote services/mashups are consumed — the surface where handler-built queries/URLs appear before M4). Added 2026-08-12 (Round 1 calibration, Pilot 1 evidence: a genuine injection pattern was reviewable at M3 but out of scope). Non-gating at M3 per §1.1; the HARD gate applies at its PRIMARY milestone M4 and FINAL-GATE M6.
 ⁴ CAP-ERR-005's former M3 SUPPORTING appearance was removed 2026-08-12 (Round 1 calibration): Pilot 1 showed the finding is valid but not actionable until M4 handler work — the M3 error-contract sketch is CAP-ERR-001's subject, which remains M3 SUPPORTING. No severity/authority change.
-
-² HARD despite SAP-REC authority: CAP-SEC-004 (weakened authentication surface), CAP-SEC-017 (secrets exposure — a named critical candidate), CAP-SEC-018 (ungoverned MCP exposure incl. the documented SAP-API prohibition), CAP-LOG-005 (public actuators = credential-grade disclosure), CAP-TEST-007 (mandatory testing of critical security behavior — named hard-gate candidate), CAP-PRIV-001 (unclassified personal data disables every downstream protection). Gate class follows consequence, not wording strength.
 
 ---
 
