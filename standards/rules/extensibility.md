@@ -28,7 +28,7 @@ Scope boundaries: SaaS extension *authorization* (`cds.ExtensionDeveloper` role 
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-CDS-007 (aspects mechanics), CAP-ARCH-002 (no forked framework layers), CAP-VER candidates (upgrade path — future category) |
+| **Related rules** | CAP-CDS-007 (aspects mechanics), CAP-ARCH-002 (no forked framework layers), CAP-VER-002/-005 (upgrade path) |
 | **Last verified** | 2026-08-12 |
 
 ### Rule statement

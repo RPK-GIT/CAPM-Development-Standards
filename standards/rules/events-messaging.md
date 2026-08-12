@@ -283,7 +283,7 @@ Technical headers required by target protocols (correlation IDs, content types) 
 | **Runtime** | Both |
 | **CAP version** | Current queue semantics (default `maxAttempts: 10`, exponential backoff) |
 | **Status** | Active |
-| **Related rules** | CAP-EVT-002, CAP-EVT-003, CAP-SEC-009 (dead-letter admin actions need protected services); CAP-LOG-004 (telemetry mechanism); monitoring mandates remain future CAP-OPS |
+| **Related rules** | CAP-EVT-002, CAP-EVT-003, CAP-SEC-009 (dead-letter admin actions need protected services); CAP-LOG-004 (telemetry mechanism); alerting thresholds remain ORG (G-32/G-37) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -295,7 +295,7 @@ Without a dead-letter process, permanently failing messages accumulate silently 
 ### Implementation guidance
 - In handlers, classify errors: transient (let retry) vs semantic (mark unrecoverable immediately — SAP's example pattern treats 4xx-class semantic errors this way).
 - Expose the documented dead-letter admin service pattern, filter `attempts >= maxAttempts` programmatically (maxAttempts is configurable), and restrict it to an operations role.
-- Wire the OpenTelemetry queue metrics into the project's monitoring (mechanism per CAP-LOG-004; alerting policy remains ORG/future CAP-OPS).
+- Wire the OpenTelemetry queue metrics into the project's monitoring (mechanism per CAP-LOG-004; alerting policy remains ORG — G-32/G-37).
 
 ### Evidence expected in code
 Error-classification in queued handlers; a restricted dead-letter admin service (or documented equivalent operational procedure); queue metrics in the monitoring setup; ORG thresholds referenced (G-32) or flagged open.

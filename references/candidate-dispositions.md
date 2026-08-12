@@ -438,3 +438,84 @@ Batch severity: **0 Critical / 6 High / 9 Medium / 0 Low** (High: PERF-003/-007,
 - **In-app vs side-by-side extension strategy selection** — the four documented categories are described, not prescribed per situation; strategy choice is architecture (ADR per CAP-ARCH-007).
 - **Data masking** — no CAP-documented general masking mechanism beyond log-header masking (CAP-SEC-016) and the audit mechanisms; nothing to formalize.
 - **Retention periods / legal grounds** — G-16 unchanged (legal, not engineering).
+
+---
+
+## Batch 7 (final) — Deployment, CI/CD, Versions & Operations (2026-08-12)
+
+Verification basis: two passes on 2026-08-12 — a **full version-baseline re-verification** (headline: the June 2026 wave is still current; the August 2026 minor cds 10.1 / CAP Java 5.1 is listed but explicitly UNRELEASED) and a deployment/CI-CD/operations pass; plus a direct re-check of the may25 release note for the `hdbcds` claim. [docs/version-management.md](../docs/version-management.md) rewritten to the 2026-08-12 baseline. Final rules: [deployment.md](../standards/rules/deployment.md) (3), [cicd.md](../standards/rules/cicd.md) (3), [versions-dependencies.md](../standards/rules/versions-dependencies.md) (6), [production-readiness.md](../standards/rules/production-readiness.md) (3). **Phase 2 rule authoring is complete — all 20 categories authored.**
+
+### Deployment candidates (6 reviewed)
+
+| Candidate (candidate-rules.md §CAP-DEP) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 MTA-based CF deployment | ACCEPTED WITH MODIFICATION | CAP-DEP-001 | Severity High → **Medium** (mechanism/maintainability; dangerous *content* is owned elsewhere); ⚠ UI facet list corrected per verification (add `app-frontend`; `portal` = multitenant) |
+| #2 Production facets before first deploy | MERGED | → CAP-SEC-002 / CAP-DB-001/-002 | The "no SQLite/mocked auth in production" content is already Critical/High normative there; DEP-001 keeps the facets as the scaffold path |
+| #3 Landscape config in `.mtaext` | ACCEPTED | CAP-DEP-002 | "Allows you to keep landscape-specific deployment settings outside your base mta.yaml" verified |
+| #4 Kyma Helm + buildpacks | DOWNGRADED | CAP-DEP-003 | High → **Medium**; buildpack properties (reproducible, unprivileged, SBoM) and values.yaml preservation verified verbatim; absorbs #6 |
+| #5 `cds bind` hybrid, no materialized credentials | MERGED | → CAP-SEC-017 | Already normative there since Batch 1 (pointer-only bindings) |
+| #6 Read-only pull secrets | MERGED | → CAP-DEP-003 | Imperative wording verified ("use a technical user with read-only permissions") — folded as a strong clause |
+
+### CI/CD candidates (3 reviewed, 1 new rule)
+
+| Candidate (§CAP-CICD) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Pipelines scaffolded via `cds add github-actions` | ACCEPTED WITH MODIFICATION | CAP-CICD-001 | Reframed as capability rule ("build/test/deploy through a pipeline") with the documented scaffolds preferred — no product prescribed (GitHub Actions worked example; SAP CI/CD service and Piper as documented alternatives); High kept (laptop deploys = unreproducible production) |
+| #2 Protected environment + tagged releases | ACCEPTED WITH MODIFICATION | CAP-CICD-002 | Added artifact attribution and the rollback-scope honesty clause (**no DB schema rollback guarantees invented** — schemas roll forward per CAP-DB-007) |
+| #3 Cloud-backed integration tests via `cds bind --exec` in CI | MERGED | → CAP-TEST-006 | Hybrid CI execution already normative there (Batch 5) |
+| — (batch scope: quality gates; Phase 3 enabler) | NEW RULE | CAP-CICD-003 | **ORG** — SAP prescribes no gate set (G-39 keeps the open specifics); defines the four enforcement classes (automatic / manual review / deployment-time / operational) that Phase 3 will map rules onto |
+
+### Version candidates (9 reviewed)
+
+| Candidate (§CAP-VER) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Freeze dependencies via lockfile | ACCEPTED WITH MODIFICATION | CAP-VER-001 | Absorbs #2 (refresh half of the same lifecycle); severity Critical → **High** (probabilistic drift, not direct exploit); "should freeze all their dependencies, including transient ones" verified verbatim |
+| #2 Regular refresh (Dependabot/Renovate one-by-one) | MERGED | → CAP-VER-001 | "One-by-one" wording verified; SLA stays ORG (G-40) |
+| #3 Active CAP major, maintenance window | DOWNGRADED | CAP-VER-002 | Critical → **High** (consistent with CAP-MT-001's unsupported-≠-breached calibration); absorbs #4; maintenance-model wording re-verified. ⚠ cds 9's Maintenance status is policy-derived, not verbatim — flagged in the baseline |
+| #4 Latest minors monthly / patches ASAP (Java) | MERGED | → CAP-VER-002 | The consumption-cadence clause |
+| #5 Current runtime baselines | DOWNGRADED | CAP-VER-003 | Critical → **High**; rule binds the **live baseline document** instead of hardcoded numbers; adds the pin-consistency requirement (documented update-every-pin-location duty) |
+| #6 Never mix CAP package major lines | DOWNGRADED | CAP-VER-004 | Critical → **High** (most mixes fail loudly; the subtle instance-level case is documented and owned at CAP-EVT-002) |
+| #7 Official migration tooling | DOWNGRADED | CAP-VER-005 | High → **Medium** (process quality; breakage classes owned by referenced rules); `cds upgrade` alpha status preserved |
+| #8 `hdbtable` not `hdbcds` | DOWNGRADED | CAP-VER-006 | High → **Medium** (loud build/deploy failure; review value = catching legacy config pre-upgrade). ⚠ Claim re-verified **directly on the live may25 release note** ("can now no longer be used") after the baseline agent could not find it on the HANA guide; HANA Cloud never used hdbcds — applicability narrowed accordingly |
+| **#9 Queue drain on cds 8→10** | **MERGED** | → **CAP-EVT-002** (version note) | Explicit disposition as required: the hazard is documented on the event-queues page and has been owned by CAP-EVT-002's CAP-version field since Batch 3 (re-verified verbatim 2026-08-12). CAP-VER-005 references release-note operational steps generically — **single authoritative requirement, no duplicate** |
+
+### Operations candidates (2 remaining + 2 historical + go-live scope)
+
+| Candidate (§CAP-OPS) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Health probes wired in descriptors | DOWNGRADED | CAP-OPS-001 | High → **Medium** (degraded lifecycle management, loud under failure); ⚠ facet list corrected: probes wired by `mta` and `kyma` facets (cf-manifest not confirmed — not cited); CF readiness-tooling caveat re-verified ("not yet supported") |
+| #2 Production UI entry point | ACCEPTED | CAP-OPS-002 | "Aren't available in the cloud" verified verbatim; facet list updated (incl. `app-frontend`) |
+| #3 MCP exposure governance | (Batch 1) MERGED | → CAP-SEC-018 | Historical — **not recreated** (MCP adapter status re-verified 2026-08-12: still Beta; Java flavor still not public) |
+| #4 Topology by configuration | MERGED | → CAP-ARCH-006 | The config-not-code topology mechanism is that rule's documented rationale; a standalone rule would duplicate it |
+| — (batch scope: G-36 go-live checklist) | NEW RULE | CAP-OPS-003 | **ORG, High** — closes gap G-36 by binding the M9 lifecycle gate as a rule: aggregation-and-evidence only (every element cites its owning rule; nothing double-normed); the operational drill (trace-through, probes, runbook) makes M9 concretely assessable |
+
+### Batch summary
+
+| Metric | Deployment | CI/CD | Versions | Operations |
+|---|---|---|---|---|
+| Candidates reviewed | 6 | 3 | 9 | 2 (+2 historical) |
+| Accepted unchanged | 1 | 0 | 0 | 1 |
+| Accepted with modification | 1 | 2 | 1 | 0 |
+| Merged | 3 (#2, #5 out; #6 in) | 1 (#3 → CAP-TEST-006) | 3 (#2, #4 in; **#9 → CAP-EVT-002**) | 1 (#4 → CAP-ARCH-006) |
+| Downgraded | 1 | 0 | 5 | 1 |
+| Rejected | 0 | 0 | 0 | 0 |
+| Deferred | 0 | 0 | 0 | 0 |
+| New rules | 0 | 1 (CAP-CICD-003, ORG) | 0 | 1 (CAP-OPS-003, ORG) |
+| **Final rules** | **3** | **3** | **6** | **3** |
+
+Batch severity: **0 Critical / 6 High / 9 Medium / 0 Low** (High: CAP-CICD-001, CAP-VER-001..004, CAP-OPS-003). Authority: 5 SAP-REQ (CAP-VER-001/-002/-003/-004/-006), 8 SAP-REC, 2 ORG (CAP-CICD-003, CAP-OPS-003). Runtime: 2 Node.js-only (CAP-VER-001/-004), 13 Both.
+
+### Verification corrections applied (summary)
+
+1. **Version baseline re-verified in full (2026-08-12): June 2026 wave still current; Aug 2026 minor (10.1/5.1) listed but UNRELEASED** — version-management.md rewritten with today's date, not-established flags recorded honestly (`@cap-js/*` patch versions unpublished; cds 9 Maintenance policy-derived).
+2. `hdbcds` removal re-sourced to the live may25 release note after the HANA guide no longer carries it.
+3. UI facets corrected (add `app-frontend`); health-probe facets = `mta` + `kyma` only.
+4. No zero-downtime/blue-green rules — SAP's deployment pages document none (verified); ORG territory (G-39).
+5. MCP adapter re-verified still Beta (CAP-SEC-018's status current).
+
+### Scope items reviewed with no rule created (Batch 7)
+
+- **Zero-downtime/blue-green deployment** — no SAP guidance exists on the deployment pages (verified); ORG strategy (G-39).
+- **Database migration rollback guarantees** — deliberately NOT invented; schemas roll forward (CAP-DB-007); CAP-CICD-002 scopes rollback to the application artifact.
+- **Scaling values, resource limits, alert thresholds, probe intervals** — gaps G-04/G-37 unchanged; no numbers manufactured.
+- **CI/CD product mandates** — none; capability rules only.

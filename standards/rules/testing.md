@@ -323,7 +323,7 @@ Dedicated end-to-end/staging suites may use real (test-tenant) identities via bo
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-DB-002 (parity limits), CAP-DB-008 (locking not on SQLite), CAP-TEST-002 (MTX not on H2), CAP-MT-003 (isolation tests), CAP-SEC-017/CAP-DEP candidate (`cds bind` pointer-only credentials) |
+| **Related rules** | CAP-DB-002 (parity limits), CAP-DB-008 (locking not on SQLite), CAP-TEST-002 (MTX not on H2), CAP-MT-003 (isolation tests), CAP-SEC-017 (`cds bind` pointer-only credentials) |
 | **Last verified** | 2026-08-12 |
 
 ### Rule statement

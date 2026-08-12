@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 5 active (0 Critical, 1 High, 4 Medium). All SAP references verified against official CAP documentation on **2026-08-12**.
 
-Scope boundaries: **sensitive-data hygiene in logs is [CAP-SEC-016](security.md)** (secrets/PII, masking, injection, production levels) — not restated here. **Application logs are not audit logs:** audit logging of personal-data access is [CAP-PRIV-002](data-privacy.md) (`@cap-js/audit-logging` / SAP Audit Log service, see the [source map](../../references/sap-cap-sources.md) §6); CAP documents **no** automatic authorization-decision logging (ORG gap G-06); retention policy is ORG (G-03). Health-check wiring and monitoring/alerting mandates belong to the future `CAP-OPS`/`CAP-DEP` categories (G-37) — no monitoring SLAs are invented here.
+Scope boundaries: **sensitive-data hygiene in logs is [CAP-SEC-016](security.md)** (secrets/PII, masking, injection, production levels) — not restated here. **Application logs are not audit logs:** audit logging of personal-data access is [CAP-PRIV-002](data-privacy.md) (`@cap-js/audit-logging` / SAP Audit Log service, see the [source map](../../references/sap-cap-sources.md) §6); CAP documents **no** automatic authorization-decision logging (ORG gap G-06); retention policy is ORG (G-03). Health-check wiring is [CAP-OPS-001](production-readiness.md); monitoring/alerting mandates remain ORG (G-37) — no monitoring SLAs are invented here.
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -198,7 +198,7 @@ Systems that cannot accept correlation headers (fixed third-party APIs) break pr
 | **Category** | Logging & observability |
 | **Severity** | Medium |
 | **Authority** | SAP-REC (documented tooling; adoption itself is not mandated by SAP — whether/what to monitor is ORG territory, G-37) |
-| **Applicability** | Projects adopting tracing/metrics instrumentation; NOT APPLICABLE where none is adopted (the *decision* to adopt belongs to the future CAP-OPS gate, not this rule) |
+| **Applicability** | Projects adopting tracing/metrics instrumentation; NOT APPLICABLE where none is adopted (the *decision* to adopt is M9-gate/ORG territory — CAP-OPS-003/G-37 — not this rule) |
 | **Runtime** | Both (Node.js: `@cap-js/telemetry` plugin — automatic OTel instrumentation, exporters incl. SAP Cloud Logging, Dynatrace, Jaeger, OTLP; Java: `cds add cloud-logging --with-telemetry`, assumes the SAP Java Buildpack) |
 | **CAP version** | Current plugin/tooling state per docs — no version-status claims beyond that (re-verify at adoption time) |
 | **Status** | Active |
@@ -258,7 +258,7 @@ Custom spans/metrics *inside* handlers (business KPIs) via the standard OTel API
 | **Runtime** | Java |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-015 (backend exposure verification), CAP-SEC-017 (what env-style actuators would leak); health-check *wiring* is the future CAP-OPS/CAP-DEP scope |
+| **Related rules** | CAP-SEC-015 (backend exposure verification), CAP-SEC-017 (what env-style actuators would leak); health-check *wiring* is [CAP-OPS-001](production-readiness.md) |
 | **Last verified** | 2026-08-12 |
 
 ### Rule statement

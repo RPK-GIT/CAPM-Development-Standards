@@ -4,8 +4,8 @@ A production-grade **SAP Cloud Application Programming Model (CAP) Engineering S
 
 This repository is the authoritative, version-controlled source of truth for how our organization designs, develops, tests, secures, deploys, operates — and **reviews** — CAP applications. It is written to be used by **human developers** and by **Claude Code**, both as an implementation assistant and as an independent reviewer at development milestones.
 
-> **Status: Phase 1 — Research & Foundation.**
-> The repository architecture, source map, candidate rule inventory, lifecycle, and review/development models are established. The full formal rule catalog is authored in the next phase. See [Roadmap](#roadmap).
+> **Status: Phase 2 complete (2026-08-12) — the full Layer 2 rule catalog is authored and normative: 134 rules across all 20 categories.**
+> Next: Phase 3 — per-milestone rule mappings, checklists, and worked examples. See [Roadmap](#roadmap).
 
 ## What this repository is — and is not
 
@@ -80,7 +80,7 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 | Phase | Deliverable | Status |
 |---|---|---|
 | 1 — Research & Foundation | Repo architecture, source map, candidate rules, gaps, lifecycle & review/development models, AI rule family | ✅ this commit |
-| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | 🔶 in progress — 119 rules: Security (18), Multitenancy (6), Architecture (7), CDS (11), Services (9), Data (10), Transactions (6), Events (7), Business Logic (5), Integration (7), Testing (7), Error Handling (6), Logging (5), Performance (7), Extensibility (4), Privacy (4); [dispositions](references/candidate-dispositions.md) |
+| 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | ✅ **complete (2026-08-12)** — 134 rules across all 20 categories; [dispositions](references/candidate-dispositions.md) |
 | 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | ⬜ |
 | 4 — Pilot & Calibration | Run reviews against real projects, calibrate severities, close gaps in [research-gaps.md](references/research-gaps.md) | ⬜ |
 

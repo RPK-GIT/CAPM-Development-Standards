@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 10 active (0 Critical, 4 High, 5 Medium, 1 Low). All SAP references verified against official CAP documentation on **2026-08-11**.
 
-Scope boundaries: **injection safety is [CAP-SEC-013](security.md#cap-sec-013--construct-queries-injection-safe)** — the rules here reference it and do not restate it. Model-level persistence design (keys, compositions, managed data) is `CAP-CDS`; pagination values and query-performance modeling are [CAP-PERF](performance.md) (limits decisions: CAP-SEC-014); deploy formats (`hdbtable` vs `hdbcds`) belong to the future `CAP-VER` category.
+Scope boundaries: **injection safety is [CAP-SEC-013](security.md#cap-sec-013--construct-queries-injection-safe)** — the rules here reference it and do not restate it. Model-level persistence design (keys, compositions, managed data) is `CAP-CDS`; pagination values and query-performance modeling are [CAP-PERF](performance.md) (limits decisions: CAP-SEC-014); deploy formats (`hdbtable` vs `hdbcds`) are [CAP-VER-006](versions-dependencies.md).
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -163,7 +163,7 @@ The `@cap-js` services are the maintained line, auto-configured, and behaviorall
 1. Read `package.json` dependencies: presence of `@cap-js/sqlite` (dev) and `@cap-js/hana` (production) or the project's documented equivalents.
 2. Direct `hdb`/`sqlite3` dependencies alongside the service packages → FAIL (name the package to remove).
 3. Old built-in service usage (legacy `cds.requires.db.kind` configs without `@cap-js` packages on cds ≥ 8) → FAIL unless a dated migration plan exists.
-4. Check major-line pairing: `@cap-js/*` major vs `@sap/cds` major per the version register → mismatch → FAIL (cross-report to future CAP-VER).
+4. Check major-line pairing: `@cap-js/*` major vs `@sap/cds` major per the version register → mismatch → FAIL (cross-report to CAP-VER-004).
 5. Report with file:line into `package.json`.
 
 ### Good example

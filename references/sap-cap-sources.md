@@ -95,7 +95,7 @@ Authority legend: **REQ** = SAP-documented requirement · **REC** = SAP-document
 | Java migration | https://cap.cloud.sap/docs/java/migration | Guides 1.x→2.0→3.0→4.0→5.0; OpenRewrite recipes `cds-services-recipes`; Java 5 default flips (`preferServiceException` true, outbox unordered, auth mode model-relaxed, HANA fuzzy true); MTX classic removed at 3.0/4.0 boundary | REQ | J | Recipes 5.0.0 |
 | MCP protocol adapter | https://cap.cloud.sap/docs/guides/protocols/mcp | **Beta**: `@mcp` annotation exposes service as MCP server (`describe`/`query`/`call_action`, read + unbound actions only); full CAP authN/Z enforced; auto-registers Claude Code/OpenCode locally; **no prompt-injection protection, rate limiting, or audit logging; not SAP-endorsed for SAP Application APIs** | MEN (beta) + explicit warnings | B (Java lagging) | Beta June 2026; Java prop `cds.mcp.autoConfig`→`autoWired` at 5.0 |
 | MCP dev-assistant server | https://cap.cloud.sap/docs/releases/2025/aug25 · https://github.com/cap-js/mcp-server | `@cap-js/mcp-server` — dev-time MCP server giving AI agents CAP/project context; no stability label | MEN | Tooling | Announced Aug 2025 |
-| 2026 changelog | https://cap.cloud.sap/docs/releases/2026/changelog | Concrete versions at fetch: `@sap/cds` 10.0.2, cds-dk 10.0.1, compiler 7.0.1, mtxs 4.0.1, CAP Java 5.0.0 | MEN | B | Aug 2026 minor pending at fetch time |
+| 2026 changelog | https://cap.cloud.sap/docs/releases/2026/changelog | Concrete versions at fetch: `@sap/cds` 10.0.2, cds-dk 10.0.1, compiler 7.0.1, mtxs 4.0.1, CAP Java 5.0.0 | MEN | B | **Re-verified 2026-08-12: unchanged**; Aug 2026 minor (10.1/5.1) listed on the index but explicitly UNRELEASED |
 
 ## 6. Integration, events & messaging, multitenancy, extensibility, data privacy
 

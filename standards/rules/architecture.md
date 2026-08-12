@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 7 active (0 Critical, 3 High, 4 Medium). All SAP references verified against official CAP documentation on **2026-08-11**. Note: SAP's former *Bad Practices* page (`/docs/about/bad-practices`) is **removed** from the current docs; rules previously grounded there are scoped to what remains citable on live pages (see CAP-ARCH-002).
 
-Scope boundaries: service *projection* design is [CAP-SRV-001](services-apis.md); security exposure is `CAP-SEC`; deployment topology mechanics belong to the future `CAP-DEP` category.
+Scope boundaries: service *projection* design is [CAP-SRV-001](services-apis.md); security exposure is `CAP-SEC`; deployment topology mechanics are [CAP-DEP](deployment.md).
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -356,7 +356,7 @@ Deliberate use of vendor-specific capabilities (HANA search/geo features, platfo
 | **Runtime** | Both |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-ARCH-005 (agnosticism is what keeps the cut cheap), CAP-ARCH-007 (the cut is ADR-worthy), future CAP-DEP rules |
+| **Related rules** | CAP-ARCH-005 (agnosticism is what keeps the cut cheap), CAP-ARCH-007 (the cut is ADR-worthy), CAP-DEP-001/-003 (deployment mechanics); absorbs candidate CAP-OPS #4 (topology by configuration) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

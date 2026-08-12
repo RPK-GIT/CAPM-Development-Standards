@@ -2,7 +2,7 @@
 
 The formal rule catalog describing what a production-grade CAP application looks like. Every rule follows [templates/rule-template.md](../../templates/rule-template.md) and carries a stable ID, severity, [authority level](../../docs/authority-levels.md), runtime applicability, and CAP version applicability.
 
-> **Status:** Phase 2 in progress. **Authored and normative: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9), `CAP-DB` (10), `CAP-TXN` (6), `CAP-EVT` (7), `CAP-LOGIC` (5), `CAP-INT` (7), `CAP-TEST` (7), `CAP-ERR` (6), `CAP-LOG` (5), `CAP-PERF` (7), `CAP-EXT` (4), `CAP-PRIV` (4) — 119 rules** — see [candidate-dispositions.md](../../references/candidate-dispositions.md) for how each candidate was disposed. All other categories remain candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md); candidates are *not normative* — do not cite them in reviews until promoted into a category file here.
+> **Status: Phase 2 rule authoring COMPLETE (2026-08-12).** All 20 categories are authored and normative — **134 rules**: `CAP-SEC` (18), `CAP-MT` (6), `CAP-ARCH` (7), `CAP-CDS` (11), `CAP-SRV` (9), `CAP-DB` (10), `CAP-TXN` (6), `CAP-EVT` (7), `CAP-LOGIC` (5), `CAP-INT` (7), `CAP-TEST` (7), `CAP-ERR` (6), `CAP-LOG` (5), `CAP-PERF` (7), `CAP-EXT` (4), `CAP-PRIV` (4), `CAP-DEP` (3), `CAP-CICD` (3), `CAP-VER` (6), `CAP-OPS` (3). Full disposition history: [candidate-dispositions.md](../../references/candidate-dispositions.md). The candidate inventory in [references/candidate-rules.md](../../references/candidate-rules.md) is now research history only.
 
 ## Categories
 
@@ -24,10 +24,10 @@ The formal rule catalog describing what a production-grade CAP application looks
 | `CAP-LOG` | Logging & observability — **5 rules active** | [logging-observability.md](logging-observability.md) | `cds.log`, telemetry docs |
 | `CAP-TEST` | Testing — **7 rules active** | [testing.md](testing.md) | `cds.test`, CAP Java testing docs |
 | `CAP-PERF` | Performance & scalability — **7 rules active** | [performance.md](performance.md) | Performance-relevant guides |
-| `CAP-DEP` | Deployment (CF, Kyma/K8s) | [deployment.md](deployment.md) | Deployment guides |
-| `CAP-CICD` | CI/CD | [cicd.md](cicd.md) | CI/CD guide |
-| `CAP-VER` | Dependency & version management | [versions-dependencies.md](versions-dependencies.md) | Release schedule, version docs |
-| `CAP-OPS` | Production readiness & operations | [production-readiness.md](production-readiness.md) | Deploy-to-production guidance |
+| `CAP-DEP` | Deployment (CF, Kyma/K8s) — **3 rules active** | [deployment.md](deployment.md) | Deployment guides |
+| `CAP-CICD` | CI/CD — **3 rules active** | [cicd.md](cicd.md) | CI/CD guide |
+| `CAP-VER` | Dependency & version management — **6 rules active** | [versions-dependencies.md](versions-dependencies.md) | Release schedule, version docs; live baseline: [version-management](../../docs/version-management.md) |
+| `CAP-OPS` | Production readiness & operations — **3 rules active** | [production-readiness.md](production-readiness.md) | Deploy-to-production guidance |
 
 ## Catalog invariants
 
