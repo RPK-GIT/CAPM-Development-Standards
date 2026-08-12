@@ -1,0 +1,59 @@
+# CAPM Project Profile — copy to the ADOPTING PROJECT's repository root as `capm-profile.yaml`.
+# Schema, allowed values, and validation rules: development/project-profile.md (CAPM standards repo).
+# SECURITY: capability declaration ONLY — never put credentials, tokens, secrets, or personal data here.
+
+standard:
+  version: ""            # commit SHA or tag of the CAPM standards repo this project follows
+
+project:
+  name: ""
+  milestone: M0          # M0..M9 | LIVE
+
+cap:
+  runtime: ""            # nodejs | java
+  version: ""            # major line, e.g. "10" (nodejs) or "5" (java) — see docs/version-management.md
+  odata: true
+
+tenancy:
+  multitenant: false
+  sidecar: null          # required (true|false) when multitenant: true
+
+identity:
+  service: undecided     # ias | xsuaa | undecided (must be decided by M1 exit)
+  new_project: false
+
+capabilities:            # ALL values must be explicit decisions — no field may be deleted
+  eventing: false
+  broker: false
+  remote_services: false
+  mashups: false
+  custom_operations: false
+  instance_authorization: false   # row-level access requirements exist (drives CAP-SEC-010)
+  drafts: false
+  media: false
+  localized_data: false
+  temporal_data: false
+  personal_data: false   # explicit decision required — drives all CAP-PRIV gates
+  pdm: false
+  extensibility: false
+  feature_toggles: false
+  mcp: false
+  telemetry: false
+  ui: false
+
+deployment:
+  target: undecided      # cloud-foundry | kyma | both | undecided (decided by M1 exit)
+  multi_landscape: false
+
+database:
+  production: undecided  # hana | postgres | undecided (decided by M1 exit)
+  legacy_hdbcds: false
+
+workload:                # optional block — defaults false; reviewers spot-check plausibility
+  mass_data: false
+  concurrent_edit: false
+  concurrent_paging: false
+  hana_large_volume: false
+  pessimistic_locking: false
+  cloud_only_features: false
+  major_upgrade_in_scope: false

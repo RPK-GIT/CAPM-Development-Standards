@@ -1,0 +1,26 @@
+# /capm-review-milestone — Milestone compliance review
+
+Review the current CAP project against the CAPM Engineering Standard for milestone: $ARGUMENTS (M0–M9; also accepts `re-review Mx` after remediation).
+
+**Read-only:** per AI-REVIEW-012, make **no modifications to application code** — findings only. This command binds the existing [review model](../../reviews/review-model.md), [AI-REVIEW rules](../../standards/ai/ai-review-rules.md), [rule-milestone matrix](../../development/rule-milestone-matrix.md), milestone [checklists](../../development/milestones/m0-requirements.md), and [CAPire verification protocol](../../reviews/capire-verification.md). Resolve standards paths via the repo named in `capm-profile.yaml → standard.version`.
+
+## Procedure
+
+1. **Load the profile** — `capm-profile.yaml` at the project root.
+2. **Validate it** per [project-profile.md](../../development/project-profile.md). Missing/invalid/✗-combination → return **NOT-ASSESSABLE** naming exactly what's missing; do not guess. Cross-check profile vs repository (runtime, MTX, messaging config, personal-data plausibility) — contradictions are CONTRADICTORY-profile findings and stop the review.
+3. **Confirm the milestone** — must be a valid M0–M9; check `project.milestone` plausibility (reviewing M6 while the profile says M2 → ask/flag). For **re-review**: additionally load the prior report, scope to its FAILED/NOT-ASSESSABLE rules plus anything the remediation diff touched — and verify actual resolution per each rule's detection, never inferring success from "files changed".
+4. **Load the milestone checklist** (`development/milestones/`) and **the matrix**.
+5. **Filter the rule set:** the milestone's PRIMARY + FINAL-GATE rows; SUPPORTING rows only where this milestone's changes touch their subject; then filter by runtime (a Java-only rule never appears in a Node.js review and vice versa), by capability flags (e.g. `eventing: false` removes CAP-EVT rules from scope — they are NOT APPLICABLE, not findings), by CAP version against the [version register](../../docs/version-management.md) (confirm the register's verified date first), and by deployment target where relevant.
+6. **Note each selected rule's gate class** (HARD/SOFT/ADVISORY from the matrix) and condition, and mark ORG rules **ORG-PENDING** (matrix §1.6).
+7. **Collect evidence** per each rule's catalog *Detection guidance* — open the actual files (AI-REVIEW-001); classify evidence DIRECT / INDIRECT / MISSING / CONTRADICTORY / NOT-ASSESSABLE (matrix §1.5). Developer assertions are not evidence unless a rule explicitly accepts documented decisions as such.
+8. **Evaluate each rule** → exactly one verdict: **PASS / FAIL / NOT APPLICABLE / NOT ASSESSABLE**, each with evidence (file:line or verified absence). Never convert uncertainty into PASS (AI-REVIEW-010).
+9. **Critical rules get prominence:** for every applicable Critical rule, verify evidence + source + runtime + version applicability explicitly; evaluate as HARD-GATE; surface the result in its own report subsection. Insufficient evidence → NOT ASSESSABLE, stated as such.
+10. **Verify CAPire sources** per [capire-verification.md](../../reviews/capire-verification.md): Level 1 for ordinary evaluated rules (deduplicated URLs), Level 2 explicit fetches for Critical/security/privacy/tenant-isolation rules, Level 3 for version-sensitive rules against the register + current release source. Apply the source-status effects (STALE/REMOVED + material dependence → NOT ASSESSABLE; material source change → governance flag, never a silent rule rewrite).
+11. **Evaluate the gates:** any uncovered HARD-GATE FAIL → milestone **FAIL** (an approved AI-DOC-002 exception — verified to exist, be in scope, and be unexpired — converts it toward PASS WITH EXCEPTIONS; never silently downgrade a HARD gate). SOFT-GATE FAILs: reported with impact + remediation, milestone may proceed only with explicit recorded justification. ADVISORY: recommendations only. Missing required evidence → **NOT READY**. Milestone/capability out of scope → **NOT APPLICABLE**.
+12. **Produce the remediation plan** for FAIL findings per the [remediation-plan template](../../templates/remediation-plan-template.md) — do NOT apply fixes (remediation is later development work via `/capm-develop`, then re-review).
+13. **Generate the report** using the [review-report template](../../templates/review-report-template.md), all sections, including *Standards & CAPire Evidence Verification* (traceability: rule → project evidence → source → source status → verdict), the exception register consulted, outstanding risks, and **next-milestone readiness** (entry criteria of Mx+1 met?).
+14. **Determine the milestone result:** PASS / PASS WITH EXCEPTIONS / FAIL / NOT READY / NOT APPLICABLE (matrix §1.3) — with the blocking findings listed.
+
+## Reporting discipline
+
+Precise scope claims only: *"passed the applicable Mx standards evaluated in this review"* — never "complies with CAP best practices" beyond the evaluated scope (AI-DOC-004). ORG-PENDING findings state that blocking authority derives from this standard's own governance, pending ratification. SAP is cited as requiring something only for SAP-REQ rules with verified sources (AI-REVIEW-006).

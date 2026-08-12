@@ -15,7 +15,7 @@ This repository is the **CAPM Engineering Standard**. Claude Code interacts with
 
 ## Mode 2 — Developing a CAP application against this standard
 
-Follow [development/development-model.md](development/development-model.md) and the Layer 3 rules in [standards/ai/](standards/ai/README.md). In brief:
+**Command: [/capm-develop](.claude/commands/capm-develop.md)** — it binds the model below to the [project profile](development/project-profile.md) and the [rule-milestone matrix](development/rule-milestone-matrix.md) (rule subset selection, never all 134). Follow [development/development-model.md](development/development-model.md) and the Layer 3 rules in [standards/ai/](standards/ai/README.md). In brief:
 
 1. Read the applicable standards for the current milestone ([development/lifecycle.md](development/lifecycle.md)).
 2. Inspect the existing implementation before proposing anything.
@@ -27,7 +27,7 @@ Follow [development/development-model.md](development/development-model.md) and 
 
 ## Mode 3 — Reviewing a CAP application against this standard
 
-When asked to *“Review this project against the CAPM Engineering Standard”* (or similar), follow [reviews/review-model.md](reviews/review-model.md) and the `AI-REVIEW-*` rules exactly:
+**Command: [/capm-review-milestone <Mx>](.claude/commands/capm-review-milestone.md)** — profile-driven, matrix-filtered, with [CAPire source verification](reviews/capire-verification.md) before the report; read-only. When asked to *“Review this project against the CAPM Engineering Standard”* (or similar), follow [reviews/review-model.md](reviews/review-model.md) and the `AI-REVIEW-*` rules exactly:
 
 - Inspect the **actual repository**; every finding must cite a rule ID and, where possible, file/line evidence.
 - Verdicts are `PASS` / `FAIL` / `NOT APPLICABLE` / `NOT ASSESSABLE` per rule — never impressionistic.
@@ -47,3 +47,8 @@ When asked to *“Review this project against the CAPM Engineering Standard”* 
 | AI rules (Layer 3) | [standards/ai/README.md](standards/ai/README.md) |
 | Milestones & gates | [development/lifecycle.md](development/lifecycle.md) · [rule-milestone matrix](development/rule-milestone-matrix.md) · [per-milestone checklists](development/milestones/m0-requirements.md) |
 | SAP source map | [references/sap-cap-sources.md](references/sap-cap-sources.md) |
+| Project profile & commands | [development/project-profile.md](development/project-profile.md) · [.claude/commands/](.claude/commands/capm-develop.md) · [operational validation](docs/operational-validation.md) |
+
+## Adoption in a CAP project
+
+Adopting projects: copy [templates/capm-profile-template.yaml](templates/capm-profile-template.yaml) to the project root as `capm-profile.yaml` (fill it at M0), make this standards repo available (vendored, submodule, or sibling checkout) and reference its version in `standard.version`, and copy the two command files into the project's `.claude/commands/`. Development evidence lands in the project under `docs/adr/` and `docs/capm/` for the review workflow to consume. The [worked example](examples/worked-example-m3/README.md) (ILLUSTRATIVE/NON-PRODUCTION) shows the full review flow.

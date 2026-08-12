@@ -42,7 +42,10 @@ See [docs/standard-architecture.md](docs/standard-architecture.md) for the full 
 │   ├── rule-milestone-matrix.md ← canonical rule↔milestone mapping, gates, conditions
 │   └── milestones/            ← operational checklists M0–M9
 ├── reviews/
-│   └── review-model.md        ← how Claude Code reviews projects against this standard
+│   ├── review-model.md        ← how Claude Code reviews projects against this standard
+│   └── capire-verification.md ← live SAP-source verification at report time
+├── .claude/commands/          ← /capm-develop and /capm-review-milestone
+├── examples/                  ← worked example (ILLUSTRATIVE / NON-PRODUCTION)
 ├── references/
 │   ├── sap-cap-sources.md     ← source map of official SAP CAP documentation
 │   ├── research-gaps.md       ← where SAP guidance ends and org policy must begin
@@ -73,8 +76,9 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 
 ## Using this standard
 
-- **To develop:** follow [development/development-model.md](development/development-model.md) and the milestone lifecycle in [development/lifecycle.md](development/lifecycle.md).
-- **To review:** ask Claude Code: *“Review this project against the CAPM Engineering Standard.”* The procedure and report format are defined in [reviews/review-model.md](reviews/review-model.md).
+- **To adopt:** copy [templates/capm-profile-template.yaml](templates/capm-profile-template.yaml) into your CAP project as `capm-profile.yaml` and the [commands](.claude/commands/capm-develop.md) into its `.claude/commands/` (see [CLAUDE.md — Adoption](CLAUDE.md)).
+- **To develop:** `/capm-develop` — binds [development-model.md](development/development-model.md) + the [matrix](development/rule-milestone-matrix.md) to your profile.
+- **To review:** `/capm-review-milestone <Mx>` — profile-driven, matrix-filtered, [CAPire-verified](reviews/capire-verification.md); or ask *“Review this project against the CAPM Engineering Standard”* ([reviews/review-model.md](reviews/review-model.md)).
 - **To evolve the standard:** rules are modular Markdown files with stable IDs; propose changes per rule file, never by rewriting the catalog wholesale.
 
 ## Roadmap
@@ -83,7 +87,7 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 |---|---|---|
 | 1 — Research & Foundation | Repo architecture, source map, candidate rules, gaps, lifecycle & review/development models, AI rule family | ✅ this commit |
 | 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | ✅ **complete (2026-08-12)** — 134 rules across all 20 categories; [dispositions](references/candidate-dispositions.md) |
-| 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | 🔶 in progress — [rule-milestone matrix](development/rule-milestone-matrix.md) + [M0–M9 checklists](development/milestones/m0-requirements.md) done; worked examples & review/development commands next |
+| 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, operational commands, worked example | 🔶 in progress — [matrix](development/rule-milestone-matrix.md) + [M0–M9 checklists](development/milestones/m0-requirements.md) + [/capm-develop & /capm-review-milestone](.claude/commands/capm-develop.md) + [project profile](development/project-profile.md) + [worked example](examples/worked-example-m3/README.md) done; org ratification & pilot next |
 | 4 — Pilot & Calibration | Run reviews against real projects, calibrate severities, close gaps in [research-gaps.md](references/research-gaps.md) | ⬜ |
 
 ## Primary authority

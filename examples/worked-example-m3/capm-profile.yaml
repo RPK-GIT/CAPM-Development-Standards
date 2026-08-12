@@ -1,0 +1,56 @@
+# ILLUSTRATIVE / NON-PRODUCTION — fictional profile for the worked example.
+standard:
+  version: "747b933"
+
+project:
+  name: granary-orders
+  milestone: M3
+
+cap:
+  runtime: nodejs
+  version: "10"
+  odata: true
+
+tenancy:
+  multitenant: false
+  sidecar: null
+
+identity:
+  service: xsuaa
+  new_project: true
+
+capabilities:
+  eventing: false
+  broker: false
+  remote_services: false
+  mashups: false
+  custom_operations: true
+  instance_authorization: false
+  drafts: false
+  media: false
+  localized_data: false
+  temporal_data: false
+  personal_data: true
+  pdm: false
+  extensibility: false
+  feature_toggles: false
+  mcp: false
+  telemetry: false
+  ui: true
+
+deployment:
+  target: cloud-foundry
+  multi_landscape: false
+
+database:
+  production: hana
+  legacy_hdbcds: false
+
+workload:
+  mass_data: false
+  concurrent_edit: true
+  concurrent_paging: false
+  hana_large_volume: false
+  pessimistic_locking: false
+  cloud_only_features: false
+  major_upgrade_in_scope: false

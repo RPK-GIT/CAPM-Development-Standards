@@ -62,5 +62,25 @@ profile §1").
 Complete table: Rule ID | Verdict | Evidence pointer. (PASS verdicts also carry evidence.)
 
 ## 9. Exceptions honored
-Documented exceptions (AI-DOC-002) encountered and accepted during this review, with references.
+Documented exceptions (AI-DOC-002) encountered and accepted during this review, with references
+(scope and expiry verified). ORG-PENDING rule findings listed with their governance status.
+
+## 10. Standards & CAPire evidence verification
+Per the [CAPire verification protocol](../reviews/capire-verification.md) — only sources relevant
+to the evaluated rules; one fetch per unique URL. Mandatory traceability:
+rule → project evidence → CAPire source → current source status → verdict.
+
+| Rule | Verdict | Evidence | CAPire URL | Source status | Verified (level, timestamp) |
+|---|---|---|---|---|---|
+| CAP-XXX-000 | PASS | file:line | https://cap.cloud.sap/docs/… | CURRENT | L2, YYYY-MM-DD |
+
+Governance flags (source materially changed → standards re-validation recommended): list or "none".
+
+## 11. Remediation plan
+For FAIL findings: per [remediation-plan-template.md](remediation-plan-template.md) (inline or linked).
+No fixes were applied during this review (AI-REVIEW-012).
+
+## 12. Outstanding risks & next-milestone readiness
+Unresolved risks (incl. NOT-ASSESSABLE areas and soft-gate justifications); whether the entry
+criteria of the next milestone are met.
 ```
