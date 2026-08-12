@@ -101,7 +101,7 @@ Every SOFT FAIL was re-checked against its detection guidance on the current wor
 - `@cds.query.limit.max: 10` on `loadbuilder` still anomalous — capped-generic-queries observation carried from Round 1 (A-3).
 - `testPurchaseOrder()` still declared without a handler (dead API surface).
 - `getBulkATP`/`getUomConversion` still stringly typed — noted, remediation is SEC-012's territory.
-- Newly noted, no defect: an additional remote service `ZSB_MRPCONTROLLER_Private` was wired in `package.json` between rounds (destination `F4D_400_Addtional_auth`). It **broadens** the SEC-001 exposure surface and reinforces (does not weaken) the current gate FAIL.
+- Newly noted, no defect: an additional remote service `ZSB_MRPCONTROLLER_Private` was wired in `package.json` between rounds (destination name redacted). It **broadens** the SEC-001 exposure surface and reinforces (does not weaken) the current gate FAIL.
 
 ## 6. NOT ASSESSABLE rules
 
