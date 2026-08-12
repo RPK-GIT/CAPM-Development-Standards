@@ -1,0 +1,62 @@
+# CAPM Project Profile — scs (Supply Coverage Simplified)
+# Created 2026-08-12 during CAPM Phase 4 Pilot 1 (retrospective M3 review).
+# Schema authority: development/project-profile.md (CAPM standards repo).
+# SECURITY: capability declaration ONLY — never put credentials, tokens, secrets, or personal data here.
+# Values marked [OWNER-CONFIRM] are repository-derived and need owner confirmation at the next review.
+
+standard:
+  version: "791de1e"     # CAPM-Development-Standards commit this pilot reviewed against
+
+project:
+  name: scs
+  milestone: LIVE        # deployed application; this pilot reviews M3 retrospectively
+
+cap:
+  runtime: nodejs        # package.json: @sap/cds (installed 7.9.5)
+  version: "7"           # NOTE: behind the register's current major (10) — upgrade path is an M8/VER topic
+  odata: true            # OData V4 (/Admin, /AdminV4) + OData V2 via adapter proxy (server.js)
+
+tenancy:
+  multitenant: false     # xs-security.json: tenant-mode dedicated
+  sidecar: null
+
+identity:
+  service: xsuaa         # package.json cds.requires.auth + mta.yaml scs-auth
+  new_project: false
+
+capabilities:            # each value evidence-based; drives rule filtering per the matrix
+  eventing: false        # no messaging config anywhere
+  broker: false
+  remote_services: true  # 20+ S/4 OData services under srv/external/, destinations + connectivity bound
+  mashups: true          # remote entities projected into the served model (db/interactions.cds)
+  custom_operations: true    # 7 actions/functions in srv/interaction_srv.cds
+  instance_authorization: true   # row-level requirement exists: Variants ownership (srv/interaction_srv.js)
+  drafts: true           # @odata.draft.enabled on 6 entities (srv/interaction_srv.cds L175-177, L201-203)
+  media: false           # no @Core.MediaType / LargeBinary
+  localized_data: false  # no `localized` elements
+  temporal_data: false   # no @cds.valid annotations
+  personal_data: true    # user IDs stored (Variants.Owner), business-partner/supplier person names served
+  pdm: false
+  extensibility: false   # no MTX/extension artifacts
+  feature_toggles: false
+  mcp: false
+  telemetry: false       # cf-nodejs-logging-support only (logging, not telemetry)
+  ui: true               # 6 SAPUI5/Fiori apps under app/
+
+deployment:
+  target: cloud-foundry  # mta.yaml (approuter + srv + hdi deployer + html5 repo)
+  multi_landscape: false # [OWNER-CONFIRM] no multi-landscape evidence in repo (xsappname uses ${space})
+
+database:
+  production: hana       # mta.yaml hdi-shared; @sap/cds-hana, @sap/hana-client
+  legacy_hdbcds: false
+
+workload:
+  mass_data: false           # [OWNER-CONFIRM] volumes not derivable from repository
+  concurrent_edit: true      # shared writable entities outside drafts: global Variants (IsGlobal), PurchaseReqnItemText
+  concurrent_paging: false   # [OWNER-CONFIRM] not establishable from repository — see pilot open question O-1;
+                             # PERF-001 evaluated NOT ASSESSABLE rather than silently filtered
+  hana_large_volume: false   # [OWNER-CONFIRM]
+  pessimistic_locking: false
+  cloud_only_features: false
+  major_upgrade_in_scope: false   # [OWNER-CONFIRM] cds 7 → current major upgrade not evidenced as planned
