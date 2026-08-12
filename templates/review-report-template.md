@@ -27,8 +27,8 @@ tenancy model, deployment target, auth configuration per profile, test setup.
 | CAP-XXX | n | n | n | n |
 | **Total** | n | n | n | n |
 
-**Gate recommendation:** PASS / NOT PASSED — with the blocking findings listed.
-(Critical or unexcepted High ⇒ NOT PASSED.)
+**Gate recommendation:** PASS / PASS WITH EXCEPTIONS / FAIL / NOT READY / NOT APPLICABLE
+(per the [milestone gate-result model](../development/rule-milestone-matrix.md#13-milestone-gate-results); uncovered HARD-GATE violation ⇒ FAIL; missing required evidence ⇒ NOT READY). ORG-PENDING rule findings are labeled as such (matrix §1.6).
 
 ## 3. Defects (rule violations)
 Ordered by severity. One block per FAIL:

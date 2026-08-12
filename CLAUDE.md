@@ -45,5 +45,5 @@ When asked to *“Review this project against the CAPM Engineering Standard”* 
 | Principles (Layer 1) | [standards/principles/engineering-principles.md](standards/principles/engineering-principles.md) |
 | Rule catalog (Layer 2) | [standards/rules/README.md](standards/rules/README.md) |
 | AI rules (Layer 3) | [standards/ai/README.md](standards/ai/README.md) |
-| Milestones & gates | [development/lifecycle.md](development/lifecycle.md) |
+| Milestones & gates | [development/lifecycle.md](development/lifecycle.md) · [rule-milestone matrix](development/rule-milestone-matrix.md) · [per-milestone checklists](development/milestones/m0-requirements.md) |
 | SAP source map | [references/sap-cap-sources.md](references/sap-cap-sources.md) |

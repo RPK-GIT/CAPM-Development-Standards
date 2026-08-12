@@ -1,6 +1,6 @@
 # Milestone Checklist Template
 
-One checklist instance per project per milestone ([lifecycle](../development/lifecycle.md)). In Phase 3, pre-filled checklists per milestone (with concrete rule lists from the Phase 2 catalog) will be generated from this template.
+One checklist instance per project per milestone ([lifecycle](../development/lifecycle.md)). The pre-filled per-milestone checklists (concrete rule lists, gates, evidence) exist under [development/milestones/](../development/milestones/m0-requirements.md) — instantiate this template per project and work through the corresponding milestone file. Gate results follow the [matrix §1.3 model](../development/rule-milestone-matrix.md#13-milestone-gate-results).
 
 ```markdown
 # Milestone Checklist — Mx: <Milestone name>

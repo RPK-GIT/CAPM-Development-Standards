@@ -38,7 +38,9 @@ See [docs/standard-architecture.md](docs/standard-architecture.md) for the full 
 │   └── ai/                    ← Layer 3: AI development & review rules
 ├── development/
 │   ├── lifecycle.md           ← milestone-based development lifecycle (M0–M9)
-│   └── development-model.md   ← how Claude Code implements against this standard
+│   ├── development-model.md   ← how Claude Code implements against this standard
+│   ├── rule-milestone-matrix.md ← canonical rule↔milestone mapping, gates, conditions
+│   └── milestones/            ← operational checklists M0–M9
 ├── reviews/
 │   └── review-model.md        ← how Claude Code reviews projects against this standard
 ├── references/
@@ -81,7 +83,7 @@ Definitions and usage rules: [docs/authority-levels.md](docs/authority-levels.md
 |---|---|---|
 | 1 — Research & Foundation | Repo architecture, source map, candidate rules, gaps, lifecycle & review/development models, AI rule family | ✅ this commit |
 | 2 — Rule Catalog | Author full Layer 2 rule catalog from [candidate rules](references/candidate-rules.md) using the [rule template](templates/rule-template.md) | ✅ **complete (2026-08-12)** — 134 rules across all 20 categories; [dispositions](references/candidate-dispositions.md) |
-| 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | ⬜ |
+| 3 — Lifecycle Integration | Per-milestone rule mappings, checklists, worked examples | 🔶 in progress — [rule-milestone matrix](development/rule-milestone-matrix.md) + [M0–M9 checklists](development/milestones/m0-requirements.md) done; worked examples & review/development commands next |
 | 4 — Pilot & Calibration | Run reviews against real projects, calibrate severities, close gaps in [research-gaps.md](references/research-gaps.md) | ⬜ |
 
 ## Primary authority

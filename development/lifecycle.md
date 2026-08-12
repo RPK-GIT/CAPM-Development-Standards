@@ -15,7 +15,7 @@ DEVELOP → SELF-VALIDATE → TEST → CAPM STANDARD REVIEW → REMEDIATE → PA
 
 Milestones may overlap in iterative delivery (e.g., per feature), but **no milestone gate may be skipped** on the path to production. Severity gating: Critical findings always block; High findings block unless a documented exception is approved; Medium must be resolved or accepted by M9; Low is recorded (see [severity scale](../docs/standard-architecture.md#severity-scale)).
 
-> **Phase note:** rule categories are named below; the concrete per-milestone rule checklists are generated in Phase 3, once the Phase 2 rule catalog is authored.
+> **Phase 3 artifacts:** the concrete rule-to-milestone mapping lives in the [rule-milestone matrix](rule-milestone-matrix.md) (applicability, gate classes, conditions), and each milestone has an operational checklist under [milestones/](milestones/m0-requirements.md) listing its primary/supporting/final-gate rules, evidence, and review procedure. Milestone gate results use the five-state model defined in [matrix §1.3](rule-milestone-matrix.md#13-milestone-gate-results): PASS / PASS WITH EXCEPTIONS / FAIL / NOT READY / NOT APPLICABLE — a refinement of the severity gating below.
 
 ---
 

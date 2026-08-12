@@ -11,7 +11,7 @@ The binding rules are the [AI-REVIEW family](../standards/ai/ai-review-rules.md)
 | Request | Scope |
 |---|---|
 | Full standard review | All applicable Layer 2 categories |
-| Milestone gate review (e.g., "review milestone M6") | Categories mapped to that milestone in [lifecycle.md](../development/lifecycle.md) |
+| Milestone gate review (e.g., "review milestone M6") | The milestone's PRIMARY + FINAL-GATE rules (plus touched SUPPORTING rules) per the [rule-milestone matrix](../development/rule-milestone-matrix.md) and the milestone's [checklist](../development/milestones/m0-requirements.md); gate result per [matrix §1.3](../development/rule-milestone-matrix.md#13-milestone-gate-results) |
 | Category review (e.g., "security review") | Named categories only — the report states the narrowed scope |
 | Re-review after remediation | Previously failed rules + anything touched by the remediation |
 
@@ -44,7 +44,7 @@ Produce the report per [review-report-template.md](../templates/review-report-te
 - Verdict summary and counts, findings ordered by severity
 - Defects (rule FAILs) strictly separated from recommendations/observations (AI-REVIEW-005)
 - Reproducible detection notes per FAIL (AI-REVIEW-011)
-- Gate recommendation per the severity gating in [lifecycle.md](../development/lifecycle.md): Critical or unexcepted High findings ⇒ **gate not passed**
+- Gate recommendation per the [milestone gate-result model](../development/rule-milestone-matrix.md#13-milestone-gate-results): uncovered HARD-GATE violation ⇒ **FAIL**; missing required evidence ⇒ **NOT READY** (consistent with the lifecycle severity gating)
 
 ## Review integrity constraints
 
