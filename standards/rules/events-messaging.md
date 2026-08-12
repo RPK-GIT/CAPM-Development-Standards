@@ -6,7 +6,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Applicability precondition:** rules 001–005 apply to projects emitting or consuming asynchronous events/messages (or using queued processing, incl. audit logging via the queue); 006–007 to projects using a message broker. Projects with no eventing are NOT APPLICABLE throughout — state the evidence.
 
-Scope boundaries: tenant context in queued/background processing is [CAP-MT-006](multitenancy.md); no-distributed-atomicity design is [CAP-TXN-005](transactions.md); S/4- and broker-*integration* specifics belong to the future `CAP-INT` category.
+Scope boundaries: tenant context in queued/background processing is [CAP-MT-006](multitenancy.md); no-distributed-atomicity design is [CAP-TXN-005](transactions.md); S/4- and broker-*integration* specifics are [CAP-INT](integration.md).
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|
@@ -283,7 +283,7 @@ Technical headers required by target protocols (correlation IDs, content types) 
 | **Runtime** | Both |
 | **CAP version** | Current queue semantics (default `maxAttempts: 10`, exponential backoff) |
 | **Status** | Active |
-| **Related rules** | CAP-EVT-002, CAP-EVT-003, CAP-SEC-009 (dead-letter admin actions need protected services); future CAP-LOG/CAP-OPS rules for the monitoring side |
+| **Related rules** | CAP-EVT-002, CAP-EVT-003, CAP-SEC-009 (dead-letter admin actions need protected services); CAP-LOG-004 (telemetry mechanism); monitoring mandates remain future CAP-OPS |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -295,7 +295,7 @@ Without a dead-letter process, permanently failing messages accumulate silently 
 ### Implementation guidance
 - In handlers, classify errors: transient (let retry) vs semantic (mark unrecoverable immediately — SAP's example pattern treats 4xx-class semantic errors this way).
 - Expose the documented dead-letter admin service pattern, filter `attempts >= maxAttempts` programmatically (maxAttempts is configurable), and restrict it to an operations role.
-- Wire the OpenTelemetry queue metrics into the project's monitoring (future CAP-LOG/OPS rules own the general observability requirements).
+- Wire the OpenTelemetry queue metrics into the project's monitoring (mechanism per CAP-LOG-004; alerting policy remains ORG/future CAP-OPS).
 
 ### Evidence expected in code
 Error-classification in queued handlers; a restricted dead-letter admin service (or documented equivalent operational procedure); queue metrics in the monitoring setup; ORG thresholds referenced (G-32) or flagged open.

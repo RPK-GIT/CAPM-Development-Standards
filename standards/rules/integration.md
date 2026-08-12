@@ -214,7 +214,7 @@ Thin pass-through integrations (single endpoint forwarding) may reasonably work 
 | **Runtime** | Both (mechanics differ: Node in-process/`cds mock`; Java requires `cds deploy --with-mocks` for the schema) |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-INT-002, CAP-EVT-007 (the messaging sibling), CAP-SEC-017 (no cloud credentials locally); test-depth requirements belong to the future CAP-TEST category |
+| **Related rules** | CAP-INT-002, CAP-EVT-007 (the messaging sibling), CAP-SEC-017 (no cloud credentials locally); CAP-TEST-006 (hybrid coverage), CAP-TEST-001/-002 (suite mechanics) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -230,7 +230,7 @@ Mocked remotes are what keep CAP's inner loop ("airplane mode", CAP-ARCH-005) in
 1. For each imported API (CAP-INT-001 inventory), check mock data exists (`srv/external/data/<API>-<Entity>.csv`) → missing where tests touch the API → FAIL element.
 2. Check dev/default profiles: external services must not require live `credentials`/destinations to start (`cds watch` runs standalone) → live-only config → FAIL.
 3. Java: inspect `srv/pom.xml` for the `cds deploy` schema generation — `--with-mocks` present → PASS; absent while remote entities are queried in tests → FAIL (documented requirement).
-4. Verify CI needs no external connectivity for the default test suite (pipeline config; cross-note future CAP-TEST for coverage depth).
+4. Verify CI needs no external connectivity for the default test suite (pipeline config; coverage depth per CAP-TEST-006/-007).
 5. NOT APPLICABLE without remote consumption.
 
 ### Good example
@@ -393,7 +393,7 @@ Single-tenant deployments and purely provider-internal integrations need no per-
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
-Every synchronous remote call in an application flow MUST have deliberate failure behavior, decided and visible per integration: (1) a bounded wait (timeout at *some* layer — resilience wrapper, HTTP client options, or service mesh — CAP itself provides none); (2) a defined outcome on failure — propagate a meaningful error to the caller (future CAP-ERR mechanics), use a documented fallback, or decouple via the transactional queue where the operation tolerates asynchrony (CAP-EVT-002); (3) retries only where the remote operation is idempotent or made so (CAP-EVT-003 discipline), never blind; (4) remote-write failure semantics designed per CAP-TXN-005 (no distributed atomicity). Where a resilience mechanism is used, it SHOULD be one of SAP's named options (Cloud SDK `ResilienceDecorator` for Java; community packages for Node.js; service mesh for either). Concrete timeout/retry values are ORG policy (G-27).
+Every synchronous remote call in an application flow MUST have deliberate failure behavior, decided and visible per integration: (1) a bounded wait (timeout at *some* layer — resilience wrapper, HTTP client options, or service mesh — CAP itself provides none); (2) a defined outcome on failure — propagate a meaningful error to the caller (CAP-ERR-001 mechanics), use a documented fallback, or decouple via the transactional queue where the operation tolerates asynchrony (CAP-EVT-002); (3) retries only where the remote operation is idempotent or made so (CAP-EVT-003 discipline), never blind; (4) remote-write failure semantics designed per CAP-TXN-005 (no distributed atomicity). Where a resilience mechanism is used, it SHOULD be one of SAP's named options (Cloud SDK `ResilienceDecorator` for Java; community packages for Node.js; service mesh for either). Concrete timeout/retry values are ORG policy (G-27).
 
 ### Rationale
 SAP's consuming-services guide treats resilience as the application's problem and names the mechanism menu — but neither CAP runtime imposes timeouts or retries on remote calls, so the *absence of a decision* means unbounded waits on hung remotes (thread/request exhaustion under load) and accidental duplicate side effects from ad-hoc retries. This rule requires the decision without inventing behavior SAP doesn't provide — the same guarantee discipline as CAP-TXN-005/CAP-EVT-003. **Medium:** design-duty rule; concrete production incidents from violations escalate through the cross-referenced rules and ops monitoring (future CAP-OPS).

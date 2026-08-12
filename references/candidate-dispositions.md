@@ -289,3 +289,78 @@ Batch severity: **0 Critical / 3 High / 9 Medium / 0 Low** (High: CAP-INT-001 sh
 - **Batch requests to remote systems / payload-mapping conventions** — no normative SAP guidance found beyond mechanics; mapping style is design, not rule material.
 - **Circuit-breaker mandates and concrete timeout values** — SAP names no thresholds and prescribes no mechanism; remains ORG gap G-27 (CAP-INT-007 enforces only the deliberate-decision duty).
 - **Integration-testing depth** — future CAP-TEST category; CAP-INT-004 covers only mockability of the inner loop.
+
+---
+
+## Batch 5 — Testing, Error Handling & Observability (2026-08-12)
+
+Verification basis: one targeted verification pass (cds-test / Java testing; Node & Java error pages; logging/observability pages) against live official documentation on 2026-08-12. Corrections marked ⚠. Final rules: [testing.md](../standards/rules/testing.md) (7), [error-handling.md](../standards/rules/error-handling.md) (6), [logging-observability.md](../standards/rules/logging-observability.md) (5).
+
+### Testing candidates (7 reviewed, 1 new rule)
+
+| Candidate (candidate-rules.md §CAP-TEST) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 Bootstrap with `cds.test()` first | ACCEPTED WITH MODIFICATION | CAP-TEST-001 | Absorbs #2 (isolation); severity High → **Medium** (test infrastructure, not production). Bootstrap-order wording verified REQ-strength ("always ensure … goes first") |
+| #2 In-memory SQLite + `data.reset()` | MERGED | → CAP-TEST-001 | "Can be used" wording → REC element of the same rule |
+| #3 Assert stable codes, not texts/snapshots | ACCEPTED | CAP-TEST-003 | `containSubset` confirmed as SAP's named alternative; Medium kept (brittleness erodes evidence value) |
+| #4 Runner-portable tests | ACCEPTED | CAP-TEST-004 | ⚠ Correction: **no "Jest deprecated/abandoned" statement exists** — docs note only ESM/Chai friction; the inventory's cds-10 claim dropped from the rule |
+| #5 Java layered testing | DOWNGRADED | CAP-TEST-002 | High → **Medium**; ⚠ H2 wording corrected to "support **until** version 2.3.x"; MTX-not-on-H2 verified as hard limitation |
+| #6 Mock users for authenticated flows | ACCEPTED | CAP-TEST-005 | ⚠ Correction: no CAP `@MockUser` annotation documented — Java side is Spring Security's `@WithMockUser` + CAP mock-user config |
+| #7 Hybrid tests via `cds bind --exec` | ACCEPTED | CAP-TEST-006 | Reframed as coverage duty for parity-sensitive features (links CAP-DB-002/-008, CAP-TEST-002) |
+| — (batch scope: security verification) | NEW RULE | CAP-TEST-007 | **High.** Origin: SAP's documented instruction to add authentication tests for deployed unauthenticated rejection (verified Batch 1) + the verification duty for the CAP-SEC/CAP-MT rules; role-matrix element labeled GEN. Layer 2 counterpart of AI-TEST-004 |
+
+### Error-handling candidates (7 reviewed)
+
+| Candidate (§CAP-ERR) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 `req.error`/`req.reject`, not raw throws | ACCEPTED WITH MODIFICATION | CAP-ERR-001 | Absorbs #5 into one both-runtime rule; severity High → **Medium** (API quality/diagnosability) |
+| #2 Never disable 5xx sanitization | DOWNGRADED | CAP-ERR-002 | Critical → **High** (disclosure aiding attack, not direct access — consistent with CAP-SEC-016 calibration). ⚠ Runtime scoped **Node.js**: Java documents only behavioral generic-500 fallback, no security-worded sanitization — Java duty reworded to "no internals in ServiceException messages" |
+| #3 Fail loudly ("let it crash") | ACCEPTED | CAP-ERR-003 | High kept (SAP's own multitenant information-disclosure rationale verified verbatim); authority SAP-REC (Node source) with GEN note for Java |
+| #4 `srv.on('error')` synchronous only | DOWNGRADED | CAP-ERR-004 | High → **Medium** (scoped misuse; "expected to be a sync function, that is, not `async`" verified) |
+| #5 `ServiceException`+`ErrorStatuses`/`Messages` | MERGED | → CAP-ERR-001 | Same concern, Java mechanics |
+| #6 Localized codes with targets | ACCEPTED | CAP-ERR-005 | Medium kept; Fiori `target` interpretation verified |
+| #7 Validate user input in messages | DOWNGRADED | CAP-ERR-006 | Critical → **High** (reflected injection channel, consumer-dependent exploitation); both-runtime warnings verified verbatim (Java adds URLs) |
+
+### Logging/observability candidates (6 reviewed)
+
+| Candidate (§CAP-LOG) | Disposition | Final rule | Notes |
+|---|---|---|---|
+| #1 `cds.log`/SLF4J, parameterized | ACCEPTED WITH MODIFICATION | CAP-LOG-001 | Absorbs #4 (per-component levels); severity High → **Medium**; sensitive-content aspects explicitly left with CAP-SEC-016 |
+| #2 JSON structured logs in production | DOWNGRADED | CAP-LOG-002 | High → **Medium** (diagnostics capability); Node default-since-7.5 still stated on current docs; Java = active setup via `cf-java-logging-support` profile split (verified) |
+| #3 Correlation-ID propagation | ACCEPTED | CAP-LOG-003 | Automatic behavior verified on both runtimes; rule = don't break it in custom code |
+| #4 Per-component levels; masking on | MERGED | → CAP-LOG-001 (levels) / CAP-SEC-016 (masking & production levels — already owned there since Batch 1) | Split by concern to avoid duplication |
+| #5 OpenTelemetry via SAP tooling | ACCEPTED | CAP-LOG-004 | ⚠ No "Telemetry v2" status statement on the docs — version claim dropped; rule scoped to *mechanism when adopted* (adoption = ORG/CAP-OPS, G-37) |
+| #6 Expose only health endpoints publicly | DOWNGRADED | CAP-LOG-005 | Critical → **High**; ⚠ authority corrected to **SAP-REC** per verified wording ("For security reasons, it's recommended…"); runtime scoped **Java** (actuator mechanism; Node has only the built-in `/health`) |
+
+### Batch summary
+
+| Metric | Testing | Error handling | Logging |
+|---|---|---|---|
+| Candidates reviewed | 7 | 7 | 6 |
+| Accepted unchanged | 4 | 2 | 2 |
+| Accepted with modification | 1 | 1 | 1 |
+| Merged | 1 (#2) | 1 (#5) | 1 (#4, split two ways) |
+| Downgraded | 1 | 3 | 2 |
+| Rejected | 0 | 0 | 0 |
+| Deferred | 0 | 0 | 0 |
+| New rules | 1 (CAP-TEST-007) | 0 | 0 |
+| **Final rules** | **7** | **6** | **5** |
+
+Batch severity: **0 Critical / 5 High / 12 Medium / 1 Low** (High: CAP-TEST-007, CAP-ERR-002/-003/-006, CAP-LOG-005). Authority: 4 SAP-REQ (CAP-TEST-001 bootstrap, CAP-ERR-002/-004/-006), 14 SAP-REC. Runtime: 5 Node.js-only (CAP-TEST-001/-003/-004, CAP-ERR-002/-004), 2 Java-only (CAP-TEST-002, CAP-LOG-005), 11 Both. No coverage percentages, pyramid ratios, monitoring SLAs, or error taxonomies were invented — those remain gaps G-01/G-02/G-37.
+
+### Verification corrections applied (summary)
+
+1. No "Jest deprecated" claim exists — dropped (CAP-TEST-004).
+2. H2 support wording: "until version 2.3.x" (CAP-TEST-002).
+3. Java mock users: Spring `@WithMockUser`, not a CAP annotation (CAP-TEST-005).
+4. 5xx sanitization is Node-only as a security requirement; Java has behavioral generic-500 wording only (CAP-ERR-002 runtime scoping).
+5. Actuator exposure is SAP-REC ("recommended … for security reasons"), severity justified independently (CAP-LOG-005).
+6. `@cap-js/telemetry` version status unverifiable on docs — no version claim (CAP-LOG-004).
+
+### Scope items reviewed with no rule created (Batch 5)
+
+- **Coverage thresholds / test-pyramid ratios** — SAP prescribes none; remains gap G-01 (deliberately not manufactured).
+- **Error taxonomy (client/business/technical)** — SAP documents mechanics, no taxonomy; remains gap G-02; CAP-ERR-001/-005 require stable codes without prescribing a scheme.
+- **Log retention, audit-vs-application log policy** — ORG gaps G-03/G-06 unchanged; the audit-logging *mechanism* stays with the future CAP-PRIV batch.
+- **Monitoring/alerting mandates, SLAs, probe intervals** — gap G-37; CAP-LOG-004 governs mechanism-when-adopted only.
+- **Health-check wiring** — CAP-OPS/CAP-DEP candidate territory (deployment descriptors), untouched here.

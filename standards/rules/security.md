@@ -697,7 +697,7 @@ Graphs where all reachable targets share the root's exact restriction level need
 | **Runtime** | Both |
 | **CAP version** | `@assert.range` open intervals since `@sap/cds` 8.5 / CAP Java 3.5; Java validates action/function parameters (deep) since cds-java 1.28 |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-013, CAP-SEC-014; future CAP-SRV validation rule will cross-reference, not duplicate |
+| **Related rules** | CAP-SEC-013, CAP-SEC-014; CAP-SRV-003 cross-references this rule for declarative validation |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement
@@ -938,7 +938,7 @@ None. Even fully internal services keep backend authentication (see also CAP-SEC
 | **Runtime** | Both (mechanics differ — see statement) |
 | **CAP version** | All currently supported versions |
 | **Status** | Active |
-| **Related rules** | CAP-SEC-012, CAP-SEC-017; future CAP-LOG rules will cross-reference |
+| **Related rules** | CAP-SEC-012, CAP-SEC-017; CAP-LOG-001/-002 (logging mechanics) |
 | **Last verified** | 2026-08-11 |
 
 ### Rule statement

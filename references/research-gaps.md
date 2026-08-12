@@ -6,9 +6,9 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 
 | # | Area | Gap | SAP position | Proposed owner / next step |
 |---|---|---|---|---|
-| G-01 | Testing | Code-coverage thresholds, test-pyramid ratios, mandatory test layers, CI gating criteria | silent | ORG policy in `CAP-TEST` (Phase 2); pragmatic default: behavior coverage over % metrics |
-| G-02 | Error handling | Application error-code taxonomy/naming (SAP shows i18n mechanics only) | mechanism-only | ORG error-code standard; feeds `CAP-ERR` |
-| G-03 | Logging | What business data may be logged, retention periods, audit-vs-application log boundary | mechanism-only (masking defaults exist) | ORG + legal; feeds `CAP-LOG` |
+| G-01 | Testing | Code-coverage thresholds, test-pyramid ratios, mandatory test layers, CI gating criteria | silent | ORG policy still open — deliberately NOT manufactured in the authored CAP-TEST rules; behavior-verification duties are CAP-TEST-007 and the per-rule test evidence |
+| G-02 | Error handling | Application error-code taxonomy/naming (SAP shows i18n mechanics only) | mechanism-only | ORG error-code standard still open. *Stable-code duty (scheme-agnostic) now CAP-ERR-001/-005* |
+| G-03 | Logging | What business data may be logged, retention periods, audit-vs-application log boundary | mechanism-only (masking defaults exist) | ORG + legal still open. *Content hygiene is CAP-SEC-016; CAP-LOG deliberately does not equate application and audit logs (audit mechanism → future CAP-PRIV)* |
 | G-04 | Performance | Budgets/SLOs, load-test methodology, sizing (pools, instances), concrete pagination values | mechanism-only | ORG NFR standard per project (M0); defaults in `CAP-PERF` |
 | G-05 | Performance | N+1 in custom handler code (no explicit SAP rule; `$expand` primitives documented) | mechanism-only | ORG rule candidate: no queries in loops — use expands/deep reads |
 | G-06 | Security | Authorization audit trail — CAP does **not** log authz successes/failures automatically | explicit-gap | ORG custom-handler pattern needed |
@@ -42,7 +42,7 @@ Legend — SAP position: **explicit-gap** = SAP states it's the app's responsibi
 | G-34 | Multitenancy | Tenant-upgrade orchestration: zero-downtime, batching, canary tenants, rollback | mechanism-only | ORG upgrade runbook. *The upgrade-before-serve invariant itself is now CAP-MT-005* |
 | G-35 | Extensibility | Extension-allowlist content (field caps, namespaces, annotation whitelist) | explicit-gap (mechanism default-forbidden) | ORG per-product allowlist |
 | G-36 | Operations | Consolidated production-readiness / go-live checklist (SAP has none; prep scattered in to-cf guide) | silent | This standard's M9 gate fills this gap |
-| G-37 | Operations | Alerting thresholds, probe intervals, CF readiness-check tooling gap workaround | mechanism-only | ORG ops standard |
+| G-37 | Operations | Alerting thresholds, probe intervals, CF readiness-check tooling gap workaround | mechanism-only | ORG ops standard still open. *Telemetry mechanism-when-adopted is CAP-LOG-004; no monitoring mandates invented* |
 | G-38 | Operations | Container/image policy for Kyma (scanning, signing, base-image updates) | silent | ORG container policy |
 | G-39 | CI/CD | Quality gates, branch policies, security scanning, artifact retention, blue-green/canary | mechanism-only (scaffolding only) | ORG pipeline standard (feeds `CAP-CICD`) |
 | G-40 | Versions | Dependency-update SLA (patch within N days); no concrete EOL dates published per CAP version | mechanism-only | ORG SLA; track releases page |

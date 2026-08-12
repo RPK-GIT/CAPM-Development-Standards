@@ -4,7 +4,7 @@ Part of the [Layer 2 rule catalog](README.md). Rules follow the [rule template](
 
 **Rules:** 5 active (0 Critical, 0 High, 5 Medium). All SAP references verified against official CAP documentation on **2026-08-11**.
 
-Scope boundaries — this category deliberately does **not** restate: declarative-before-imperative ([CAP-SRV-003](services-apis.md)), generic-provider reliance ([CAP-SRV-002](services-apis.md)), action/function semantics incl. the Java `@On`-handler requirement ([CAP-SRV-004](services-apis.md)), transaction participation and await-discipline ([CAP-TXN-001/-006](transactions.md)), error-response mechanics (future `CAP-ERR`), tenant/user context in async work ([CAP-MT-006](multitenancy.md), [CAP-EVT-004](events-messaging.md)), and statelessness ([CAP-ARCH-004](architecture.md)). These rules govern *where business logic lives and how handlers are built*.
+Scope boundaries — this category deliberately does **not** restate: declarative-before-imperative ([CAP-SRV-003](services-apis.md)), generic-provider reliance ([CAP-SRV-002](services-apis.md)), action/function semantics incl. the Java `@On`-handler requirement ([CAP-SRV-004](services-apis.md)), transaction participation and await-discipline ([CAP-TXN-001/-006](transactions.md)), error-response mechanics ([CAP-ERR](error-handling.md)), tenant/user context in async work ([CAP-MT-006](multitenancy.md), [CAP-EVT-004](events-messaging.md)), and statelessness ([CAP-ARCH-004](architecture.md)). These rules govern *where business logic lives and how handlers are built*.
 
 | ID | Title | Severity | Authority | Runtime |
 |---|---|---|---|---|

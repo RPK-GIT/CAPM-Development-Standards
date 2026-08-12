@@ -51,7 +51,7 @@ Handlers free of manual transaction APIs; failures signaled via exceptions/`req.
 1. Search Node handlers (`srv/**/*.js|ts`) for `cds.tx(` inside `before/on/after` handler bodies → each occurrence → check justification (deliberate separate transaction, documented) → undocumented → FAIL.
 2. Search Java handlers for manual transaction APIs: `TransactionTemplate`/`PlatformTransactionManager` usage or `@Transactional(propagation = REQUIRES_NEW)` inside handler classes → same justification check → undocumented → FAIL.
 3. Search for manual commit/rollback calls (`tx.commit()`, `tx.rollback()`, `connection.commit()`) in handler paths → FAIL.
-4. Verify failure paths use `req.reject`/`req.error`/`ServiceException` (cross-check future CAP-ERR rules), not hand-managed rollback.
+4. Verify failure paths use `req.reject`/`req.error`/`ServiceException` (per CAP-ERR-001), not hand-managed rollback.
 5. Report per site with file:line.
 
 ### Good example
